@@ -1,4 +1,5 @@
 -Background-
+
 A scrolling shooter game with a top down perspective and a screen constantly moving forwards. You control a ship/character which can fire projectiles at your mouse location. 
 
 Enemies will incrementally come in from the top and sides of the screen as the level progresses. They will either fire projectiles or attempt to collide with the player to inflict damage. The game will be completed if players can survive to the end of the level or alternatively a timer.
