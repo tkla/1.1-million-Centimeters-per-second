@@ -5,15 +5,18 @@ export default class Ship{
         //Movement
         this.vel = [0, 0];
         this.speed = 1;
-        this.friction = 0.85;
+        this.friction = 0.8;
         this.knockbackFriction = 0.9;
         this.weight = 1;
 
-        this.hitboxRadius = 5;
+        this.hitboxRadius = 25;
         this.hurtboxRadious = 5;
         this.game = options.game;
         this.pos = [options.pos[0], options.pos[1]];
         
+        //Debug 
+        this.color = "black"
+        this.hit = true; 
     }
 
     draw(){
@@ -23,7 +26,12 @@ export default class Ship{
         this.ctx.arc(this.pos[0], this.pos[1], 25, 0, Math.PI *2, false);
         this.ctx.strokeStyle = "blue";
         this.ctx.stroke(); 
-        this.ctx.fillStyle = "black"; 
+        if (this.hit){
+            this.ctx.fillStyle = "pink"; 
+        } else {
+            this.ctx.fillStyle = "black";
+        }
+        
         this.ctx.fill();
 
         //DEBUG ONLY
@@ -53,13 +61,16 @@ export default class Ship{
     }
 
     update(objects){
+        this.hit = false;
         this.move();
         this.checkCollisions(objects);
     }
 
     checkCollisions(objects){
         for (let i = 0; i< objects.length; i++){
-
+            if (this.isCollideWith(objects[i]) && objects[i] != this){
+                this.hit = true;
+            }
         }
     }
 
