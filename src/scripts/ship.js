@@ -2,13 +2,11 @@ export default class Ship{
 
     constructor(options){
         this.ctx = options.ctx;
-        // Movement = (x += xVel, y += yVel)
-        // xVel = xKey * friction * speed
-        // yVel = yKey * friction * speed
+        //Movement
         this.vel = [0, 0];
         this.speed = 1;
-        this.friction = .5;
-        this.knockbackFriction = 0.4;
+        this.friction = 0.85;
+        this.knockbackFriction = 0.9;
         this.weight = 1;
 
         this.hitboxRadius = 5;
@@ -38,11 +36,31 @@ export default class Ship{
     }
 
     move(){
+        let norm = this.speed * .7101;
+        //Normalize diagonal vector
+        if ( (Math.abs(this.vel[0]) >= norm) && (Math.abs(this.vel[1]) >= norm) ){
+            this.vel[0] *= .7101;
+            this.vel[1] *= .7101;
+        }
+
+        
+        console.log(this.vel);
         this.pos[0] += this.vel[0];
         this.pos[1] += this.vel[1];
-        this.vel[0] *= this.friction;
         this.vel[1] *= this.friction;
+        this.vel[0] *= this.friction;
         
+    }
+
+    update(objects){
+        this.move();
+        this.checkCollisions(objects);
+    }
+
+    checkCollisions(objects){
+        for (let i = 0; i< objects.length; i++){
+
+        }
     }
 
     isCollideWith = function(other) {

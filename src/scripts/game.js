@@ -15,11 +15,13 @@ export default class Game{
         this.level = level;
 
         //Object array 
-        
+        this.objects = [];
         const ship = new PlayerShip({ctx: this.ctx, game: this, pos: [this.DIM_X/2, this.DIM_Y*.8]});
         const debug = new Ship({ctx: this.ctx, game: this, pos: [this.DIM_X/2, this.DIM_Y/2]});
         this.debug = debug;
         this.ship = ship;
+        this.objects.push(debug);
+        this.objects.push(ship);
 
         //Key listeners
         this.key = {};
@@ -53,59 +55,59 @@ export default class Game{
 
     update(){
         this.checkKeys();
-        this.moveObjects();
-        //Do checks
-        this.checkCollisions();
+        //Calls each objects update function.
+        this.objects.forEach( obj =>{
+            obj.update(this.objects);
+        })
     }
 
     draw(){
         this.ctx.clearRect(0, 0, this.DIM_X, this.DIM_Y);
         this.drawBackground();
         this.level.draw();
-        this.ship.draw();
-        this.debug.draw();
-    }
-
-    moveObjects(){
-        this.ship.move();
-        this.debug.move();
-    }
-
-    checkCollisions(){
+        this.objects.forEach( obj =>{
+            obj.draw();
+        })
     }
 
     checkKeys(){
-        let right = 0;
-        let left = 0;
-        let up = 0;
-        let down = 0;
-        
+        let acc = .4;
         if (this.key['KeyA']){
             if (this.ship.vel[0] > -this.ship.speed){
-                this.ship.vel[0] -= this.ship.speed*(.8);
+                this.ship.vel[0] -= this.ship.speed*(acc);
+            }
+            if (this.ship.vel[0] < -this.ship.speed){
+                this.ship.vel[0] = -this.ship.speed;
             }
         }
         
         if (this.key['KeyD']){
             if (this.ship.vel[0] < this.ship.speed){
-                this.ship.vel[0] += this.ship.speed*(.8);
+                this.ship.vel[0] += this.ship.speed*(acc);
+            }
+            if (this.ship.vel[0] > this.ship.speed){
+                this.ship.vel[0] = this.ship.speed;
             }
         }
 
         if (this.key['KeyW']){
             if (this.ship.vel[1] > -this.ship.speed){
-                this.ship.vel[1] -= this.ship.speed*(.8);
+                this.ship.vel[1] -= this.ship.speed*(acc);
+            }
+
+            if (this.ship.vel[1] < -this.ship.speed){
+                this.ship.vel[1] = -this.ship.speed;
             }
         }
         
         if (this.key['KeyS']){
             if (this.ship.vel[1] < this.ship.speed){
-                this.ship.vel[1] += this.ship.speed*(.8);
+                this.ship.vel[1] += this.ship.speed*(acc);
+            }
+            if (this.ship.vel[1] > this.ship.speed){
+                this.ship.vel[1] = this.ship.speed;
             }
         }
-        console.log(this.ship.speed);
-        // this.ship.vel[0] = (right + left)*this.ship.speed;
-        // this.ship.vel[1] = (up + down)*this.ship.speed;
     }
 
     keyDownHandler(e){
