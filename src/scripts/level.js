@@ -11,4 +11,9 @@ export default class Level {
     loadLevel(){
         
     }
+
+    //Call draw functions on objects that will spawn in level.
+    draw(){
+
+    }
 }
