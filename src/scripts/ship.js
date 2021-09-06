@@ -7,7 +7,7 @@ export default class Ship{
         // yVel = yKey * friction * speed
         this.vel = [0, 0];
         this.speed = 1;
-        this.friction = 1;
+        this.friction = .5;
         this.knockbackFriction = 0.4;
         this.weight = 1;
 
@@ -40,6 +40,9 @@ export default class Ship{
     move(){
         this.pos[0] += this.vel[0];
         this.pos[1] += this.vel[1];
+        this.vel[0] *= this.friction;
+        this.vel[1] *= this.friction;
+        
     }
 
     isCollideWith = function(other) {

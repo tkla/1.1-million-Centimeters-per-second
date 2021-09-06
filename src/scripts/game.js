@@ -7,7 +7,7 @@ export default class Game{
         this.DIM_X = ctx.canvas.width;
         this.DIM_Y = ctx.canvas.height;
         //1 tick per roughly 16ms.
-        this.TICK = 1000/16;
+        this.TICK = 1000/60;
         
         //Level 
         
@@ -81,31 +81,31 @@ export default class Game{
         let down = 0;
         
         if (this.key['KeyA']){
-            left = -1;
-        } else {
-            left = 0;
+            if (this.ship.vel[0] > -this.ship.speed){
+                this.ship.vel[0] -= this.ship.speed*(.8);
+            }
         }
         
         if (this.key['KeyD']){
-            right = 1;
-        } else {
-            right = 0;
+            if (this.ship.vel[0] < this.ship.speed){
+                this.ship.vel[0] += this.ship.speed*(.8);
+            }
         }
 
         if (this.key['KeyW']){
-            up = -1;
-        } else {
-            up = 0;
+            if (this.ship.vel[1] > -this.ship.speed){
+                this.ship.vel[1] -= this.ship.speed*(.8);
+            }
         }
         
         if (this.key['KeyS']){
-            down = 1;
-        } else {
-            down = 0;
+            if (this.ship.vel[1] < this.ship.speed){
+                this.ship.vel[1] += this.ship.speed*(.8);
+            }
         }
-
-        this.ship.vel[0] = (right + left)*this.ship.speed;
-        this.ship.vel[1] = (up + down)*this.ship.speed;
+        console.log(this.ship.speed);
+        // this.ship.vel[0] = (right + left)*this.ship.speed;
+        // this.ship.vel[1] = (up + down)*this.ship.speed;
     }
 
     keyDownHandler(e){
