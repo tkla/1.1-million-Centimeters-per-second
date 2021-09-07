@@ -16,6 +16,7 @@ export default class Ship{
         this.speed = 1;
         this.friction = 0.8;
         this.knockbackFriction = 0.9;
+        this.knockback = false;
         this.weight = 1;
 
         //Debug 

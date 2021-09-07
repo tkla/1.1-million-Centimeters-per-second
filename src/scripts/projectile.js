@@ -5,7 +5,6 @@ export default class Projectile extends Ship{
         super(options);
         this.friction = 1;
         this.speed = 5;
-
         this.dir = options.dir; 
         
         this.pathTowards(this.pos, this.dir)
@@ -19,7 +18,6 @@ export default class Projectile extends Ship{
 
         this.vel[0] = (dx / mag) * this.speed;
         this.vel[1] = (dy / mag) * this.speed;
-        console.log(this.vel);
     }
 
     checkCollisions(objects){
@@ -27,6 +25,34 @@ export default class Projectile extends Ship{
             this.hit = true;
             this.game.player.hit = true;
         }
+
+        // Boundary Collision
+        let buffer = 0;
+        (this.knockback)? buffer = 0 : buffer = 100;
+       
+        let right = (this.pos[0] > this.game.DIM_X + buffer);
+        let left = (this.pos[0] < -buffer);
+        let down = (this.pos[1] > this.game.DIM_Y + buffer);
+        let up = (this.pos[1] < -buffer);
+
+        if (!this.knockback){
+            if (right || left || down || up){
+                let idx = this.game.activeHitbox.indexOf(this);
+                this.game.activeHitbox.splice(idx,1);
+            }
+        }else {
+            if (up) {
+                let idx = this.game.activeHitbox.indexOf(this);
+                this.game.activeHitbox.splice(idx,1);
+            }
+            if (right || left){
+                this.vel[0] *= -1;
+            }
+            if (down){
+                this.vel[1] *= -1;
+            }
+        }
+        
     }
 
     isCollideWith = function(other) {

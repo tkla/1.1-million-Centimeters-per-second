@@ -6,12 +6,12 @@ import {Util} from "./util"
 export default class PlayerShip extends Ship{
     constructor(options){
         super(options);
-        this.hurtboxRadius = 5;
+        this.hurtboxRadius = 7;
         this.health = 3;
         //Movement
         this.speed = 8; 
         this.normalSpeed = this.speed;
-        this.focus_speed = this.speed/3; 
+        this.focus_speed = this.speed/2; 
         this.friction = .5;
 
         //Throttles
@@ -22,9 +22,11 @@ export default class PlayerShip extends Ship{
         for (let i = 0; i< objects.length; i++){
             if (this.isCollideWith(objects[i]) && objects[i] != this){
                 this.hit = true;
+                //this.getHit()
             }
         }
-
+        let life = document.getElementById('main-stats-life'); 
+        life.innerHTML  = `Life: ${this.health}`
         if (this.pos[0] > this.game.DIM_X) this.pos[0] = this.game.DIM_X;
         if (this.pos[0] < 0) this.pos[0] = 0;
         if (this.pos[1] > this.game.DIM_Y) this.pos[1] = this.game.DIM_Y;
@@ -55,4 +57,8 @@ export default class PlayerShip extends Ship{
         //console.log(this.game.objects);
         this.game.activeHitbox.push(tmp);
     } 
+
+    parry(){
+        
+    }
 }
