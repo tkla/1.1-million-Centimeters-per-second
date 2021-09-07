@@ -5,7 +5,7 @@ export default class MeleeProjectile extends Projectile{
         super(options);
         this.speed = 30;
         this.pathTowards(this.pos, this.dir);
-        setTimeout(() => this.removeSelf(), 100);
+        setTimeout(() => this.removeSelf(), 100 / this.game.delta);
     }
 
     move(){

@@ -50,23 +50,23 @@ export default class Ship{
         this.ctx.fill();
     }
 
-    move(){
+    move(secondsPassed, delta){
         let norm = this.speed * .7101;
         //Reduce diagonal speed
         if ( (Math.abs(this.vel[0]) >= norm) && (Math.abs(this.vel[1]) >= norm) ){
             this.vel[0] *= .7101;
             this.vel[1] *= .7101;
         }
-
-        this.pos[0] += this.vel[0];
-        this.pos[1] += this.vel[1];
+        
+        this.pos[0] += (this.vel[0] * delta);
+        this.pos[1] += (this.vel[1] * delta);
         this.vel[1] *= this.friction;
         this.vel[0] *= this.friction;
     }
 
-    update(){
+    update(secondsPassed, delta){
         this.hit = false;
-        this.move();
+        this.move(secondsPassed, delta);
         this.checkCollisions();
     }
 

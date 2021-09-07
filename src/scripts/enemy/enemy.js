@@ -5,7 +5,7 @@ import {Util} from '../util'
 export default class Enemy extends Ship{
     constructor(options){
         super(options)
-        this.fire = Util.throttle(this.fire, 100, this);
+        this.fire = Util.throttle(this.fire, (100 / this.game.delta), this);
     }
 
     fire(pos){

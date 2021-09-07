@@ -15,8 +15,9 @@ export default class PlayerShip extends Ship{
         this.friction = .5;
 
         //Throttles
-        this.fire = Util.throttle(this.fire, 100, this);
-        this.parry = Util.throttle(this.parry, 1500, this);
+        console.log(this.game.delta)
+        this.fire = Util.throttle(this.fire, 100 / this.game.delta, this);
+        this.parry = Util.throttle(this.parry, 1500 / this.game.delta, this);
     }
 
     checkCollisions(){
