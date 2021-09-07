@@ -1,4 +1,6 @@
 import Ship from "../ship"
+import Sprite from '../animations/sprite'
+import {Images} from '../animations/image_source'
 
 export default class Projectile extends Ship{
     constructor(options){
@@ -8,10 +10,22 @@ export default class Projectile extends Ship{
         this.reflected = false;
         this.knockbackMax = 2;
         this.dir = options.dir; 
-        
+        this.selfSprite = Images.bulletImage
+        this.sprite = new Sprite({
+            ctx: this.ctx,
+            swidth: 100,
+            sheight: 100,
+            dy: this.pos[1],
+            dx: this.pos[0],
+            dwidth: 100,
+            dheight: 100,
+            image: this.selfSprite
+        });
         this.pathTowards(this.pos, this.dir)
     }
+    // draw(){
 
+    // }
     checkCollisions(){
         if (this.reflected){
             this.checkHitEnemy();

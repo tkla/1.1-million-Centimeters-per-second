@@ -33,7 +33,6 @@ export default class MeleeProjectile extends Projectile{
     }
 
     removeSelf(){
-        console.log(this)
         let idx = this.game.activeHitbox.indexOf(this);
         this.game.activeHitbox.splice(idx, 1);
     }

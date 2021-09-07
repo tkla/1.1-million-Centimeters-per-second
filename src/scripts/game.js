@@ -2,7 +2,7 @@ import Enemy from "./enemy/enemy";
 import Level from "./level"
 import PlayerShip from "./player_ship";
 import Ship from "./ship"
-import Sprite from './animations/sprite'
+//import Sprite from './animations/sprite'
 
 
 export default class Game{
@@ -107,17 +107,25 @@ export default class Game{
             obj.update(secondsPassed, delta);
         })
         
+        this.sprites.forEach( obj =>{
+            obj.update(secondsPassed, delta);
+        })
     }
 
     draw(){
         this.ctx.clearRect(0, 0, this.DIM_X, this.DIM_Y);
         this.drawBackground();
         this.level.draw();
+
         this.objects.forEach( obj =>{
             obj.draw();
         })
 
         this.activeHitbox.forEach( obj =>{
+            obj.draw();
+        })
+
+        this.sprites.forEach( obj =>{
             obj.draw();
         })
     }

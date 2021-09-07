@@ -2,6 +2,8 @@ import Ship from "./ship"
 import PlayerBullet from './projectiles/playerBullet'
 import MeleeProjectile from "./projectiles/meleeProjectile";
 import {Util} from "./util"
+import {Images} from './animations/image_source'
+import Sprite from "./animations/sprite"
 
 export default class PlayerShip extends Ship{
     constructor(options){
@@ -13,6 +15,16 @@ export default class PlayerShip extends Ship{
         this.normalSpeed = this.speed;
         this.focus_speed = this.speed/2; 
         this.friction = .5;
+        //Draw self sprite
+        this.selfSprite = Images.playerShip
+        this.sprite = new Sprite({
+            ctx: this.ctx,
+            swidth: 128,
+            sheight: 128,
+            dwidth: 128,
+            dheight: 128,
+            image: this.selfSprite
+        });
 
         //Throttles
         console.log(this.game.delta)
@@ -37,10 +49,12 @@ export default class PlayerShip extends Ship{
 
     focusMode(){
         this.speed = this.focus_speed;
+        this.game.delta = 0.5;
     }
 
     unfocus(){
         this.speed = this.normalSpeed;
+        this.game.delta = 1;
     }
 
     fire(pos){
@@ -54,6 +68,7 @@ export default class PlayerShip extends Ship{
             hitboxRadius: 10,
             dir: pos
         })
+
         //console.log(this.game.objects);
         this.game.activeHitbox.push(tmp);
     } 

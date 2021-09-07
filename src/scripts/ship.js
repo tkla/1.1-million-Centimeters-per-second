@@ -1,4 +1,5 @@
-const {Util} = require('./util');
+import {Images} from './animations/image_source'
+import Sprite from "./animations/sprite"
 
 export default class Ship{
 
@@ -19,8 +20,20 @@ export default class Ship{
         this.knockback = false;
         this.weight = 1;
 
+        //Draw self sprite
+        this.selfSprite = Images.defaultShip
+        this.sprite = new Sprite({
+            ctx: this.ctx,
+            swidth: 128,
+            sheight: 128,
+            dwidth: 128,
+            dheight: 128,
+            image: this.selfSprite
+        });
+
         //Debug 
         this.hit = true; 
+        
     }
 
     draw(){
@@ -46,8 +59,9 @@ export default class Ship{
         } else {
             this.ctx.fillStyle = this.color; 
         }
-        
+
         this.ctx.fill();
+        this.sprite.draw(this.pos, this.game.mousePos);
     }
 
     move(secondsPassed, delta){
