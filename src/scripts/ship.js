@@ -1,3 +1,5 @@
+const Util = require('./util');
+
 export default class Ship{
 
     constructor(options){
@@ -10,7 +12,7 @@ export default class Ship{
         this.weight = 1;
 
         this.hitboxRadius = 25;
-        this.hurtboxRadious = 5;
+        this.hurtBoxRadius = 25;
         this.game = options.game;
         this.pos = [options.pos[0], options.pos[1]];
         
@@ -20,10 +22,9 @@ export default class Ship{
     }
 
     draw(){
-        
         //DEBUG ONLY
         this.ctx.beginPath(); 
-        this.ctx.arc(this.pos[0], this.pos[1], 25, 0, Math.PI *2, false);
+        this.ctx.arc(this.pos[0], this.pos[1], this.hitboxRadius, 0, Math.PI *2, false);
         this.ctx.strokeStyle = "blue";
         this.ctx.stroke(); 
         if (this.hit){
@@ -31,12 +32,11 @@ export default class Ship{
         } else {
             this.ctx.fillStyle = "black";
         }
-        
         this.ctx.fill();
 
         //DEBUG ONLY
         this.ctx.beginPath(); 
-        this.ctx.arc(this.pos[0], this.pos[1], this.hurtboxRadious, 0, Math.PI *2, false);
+        this.ctx.arc(this.pos[0], this.pos[1], this.hurtBoxRadius, 0, Math.PI *2, false);
         this.ctx.strokeStyle = "blue";
         this.ctx.stroke(); 
         this.ctx.fillStyle = "red"; 
@@ -51,13 +51,10 @@ export default class Ship{
             this.vel[1] *= .7101;
         }
 
-        
-        console.log(this.vel);
         this.pos[0] += this.vel[0];
         this.pos[1] += this.vel[1];
         this.vel[1] *= this.friction;
         this.vel[0] *= this.friction;
-        
     }
 
     update(objects){
@@ -81,6 +78,10 @@ export default class Ship{
         let y_2 = other.pos[1];
         let dist = Math.sqrt((x_1 - x_2) ** 2 + (y_1 - y_2) ** 2);
     
-        return (dist < ((this.hurtboxRadious + other.hitboxRadius)));
+        return (dist < ((this.hurtBoxRadius + other.hitboxRadius)));
+    }
+
+    fire(pos){
+        
     }
 }

@@ -1,16 +1,18 @@
 import Level from "./level"
 import PlayerShip from "./player_ship";
 import Ship from "./ship"
+
 export default class Game{
     constructor(ctx){
         this.ctx = ctx; 
+        this.canvas = this.ctx.canvas;
         this.DIM_X = ctx.canvas.width;
         this.DIM_Y = ctx.canvas.height;
+
         //1 tick per roughly 16ms.
         this.TICK = 1000/60;
         
         //Level 
-        
         const level = new Level(ctx);
         this.level = level;
 
@@ -23,13 +25,20 @@ export default class Game{
         this.objects.push(debug);
         this.objects.push(ship);
 
-        //Key listeners
+        //Setup listeners for keyboard and mouse. 
         this.key = {};
-        document.addEventListener("keydown", this.keyDownHandler.bind(this), false);
-        document.addEventListener("keyup", this.keyUpHandler.bind(this), false);
-
+        this.mousePos = [0,0]
+        this.setupListeners();
         //Game loop start
         this.gameStart(this.TICK, this, ctx);
+    }
+
+    setupListeners(){
+        document.addEventListener("keydown", e => this.key[e.code] = true, false);
+        document.addEventListener("keyup", e => this.key[e.code] = false, false);
+        document.getElementById("moon_game").addEventListener("mousedown", e => this.key["mousedown"] = true, false)
+        document.getElementById("moon_game").addEventListener("mouseup", e => this.key["mousedown"] = false, false)
+        this.ctx.canvas.addEventListener('mousemove', event => this.getMousePos(event))
     }
 
     drawBackground(){
@@ -71,7 +80,8 @@ export default class Game{
     }
 
     checkKeys(){
-        let acc = .4;
+        let acc = .8;
+        //Directional keys
         if (this.key['KeyA']){
             if (this.ship.vel[0] > -this.ship.speed){
                 this.ship.vel[0] -= this.ship.speed*(acc);
@@ -108,13 +118,24 @@ export default class Game{
                 this.ship.vel[1] = this.ship.speed;
             }
         }
+
+        //Slows down the ship when ship is held.
+        if (this.key['ShiftLeft']){
+            this.ship.focusMode();
+        }else {
+            this.ship.unfocus();
+        }
+
+        if (this.key['mousedown']){
+            this.ship.fire(this.mousePos);
+        }
     }
 
-    keyDownHandler(e){
-        this.key[e.code] = true; 
-    }
-
-    keyUpHandler(e){
-        this.key[e.code] = false; 
+    getMousePos(e) {
+        var rect = this.ctx.canvas.getBoundingClientRect();
+        
+        this.mousePos[0] = e.clientX - rect.left,
+        this.mousePos[1] = e.clientY - rect.top
+        console.log(this.mousePos);
     }
 }

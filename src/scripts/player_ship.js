@@ -1,12 +1,18 @@
 import Ship from "./ship"
+import {Util} from "./util"
 
 export default class PlayerShip extends Ship{
     constructor(options){
         super(options);
-        this.speed = 6; 
-        this.friction = .85;
-        this.xKey = 0;
-        this.yKey = 0;
+        this.hurtBoxRadius = 5;
+        //Movement
+        this.speed = 8; 
+        this.normalSpeed = this.speed;
+        this.focus_speed = this.speed/3; 
+        this.friction = .5;
+
+        //Throttles
+        this.fire = Util.myThrottle(this.fire, 100);
     }
 
     checkCollisions(objects){
@@ -21,4 +27,17 @@ export default class PlayerShip extends Ship{
         if (this.pos[1] > this.game.DIM_Y) this.pos[1] = this.game.DIM_Y;
         if (this.pos[1] < 0) this.pos[1] = 0;
     }
+
+
+    focusMode(){
+        this.speed = this.focus_speed;
+    }
+
+    unfocus(){
+        this.speed = this.normalSpeed;
+    }
+
+    fire(pos){
+        console.log("Firing")
+    }   
 }
