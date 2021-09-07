@@ -117,13 +117,15 @@ export default class Game{
         this.drawBackground();
         this.level.draw();
 
+        this.activeHitbox.forEach( obj =>{
+            obj.draw();
+        })
+        
         this.objects.forEach( obj =>{
             obj.draw();
         })
 
-        this.activeHitbox.forEach( obj =>{
-            obj.draw();
-        })
+        
 
         this.sprites.forEach( obj =>{
             obj.draw();

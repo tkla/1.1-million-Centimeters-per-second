@@ -8,23 +8,30 @@ export default class Sprite{
         this.dwidth = options.dwidth;
         this.dheight = options.dheight;
         this.image = options.image;
+
+        this.angle = 0;
+        this.rotate = true;
     }
 
     update(){
 
     }
 
-    draw(pos, mousePos){
-        // let dx = pos[0] - this.dwidth/2;
-        // let dy = pos[1] - this.dheight/2;
-        
+    draw(pos, mousePos, rotateNext=true){
         //Magic
-        var angle = Math.atan2(mousePos[0] - pos[0], -(mousePos[1] - pos[1]));
+        //var angle = Math.atan2(mousePos[0] - pos[0], -(mousePos[1] - pos[1]));
         
-        //console.log(angle);
-        this.ctx.setTransform(1, 0, 0, 1, pos[0], pos[1]); 
-        this.ctx.rotate(angle)
+        this.ctx.setTransform(1, 0, 0, 1, pos[0], pos[1]);
 
+        if (this.rotate){
+            this.angle = Math.atan2(mousePos[0] - pos[0], -(mousePos[1] - pos[1]));
+           
+            if (!rotateNext){
+                this.rotate = false;
+            }
+        } 
+        
+        this.ctx.rotate(this.angle)
         this.ctx.drawImage(
             this.image,
             0,

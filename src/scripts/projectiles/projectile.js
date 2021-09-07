@@ -10,6 +10,7 @@ export default class Projectile extends Ship{
         this.reflected = false;
         this.knockbackMax = 2;
         this.dir = options.dir; 
+
         this.selfSprite = Images.bulletImage
         this.sprite = new Sprite({
             ctx: this.ctx,
@@ -21,11 +22,15 @@ export default class Projectile extends Ship{
             dheight: 100,
             image: this.selfSprite
         });
+
+        //Pathing
         this.pathTowards(this.pos, this.dir)
     }
-    // draw(){
 
-    // }
+    draw(){
+        this.sprite.draw(this.pos, this.game.mousePos, false);
+    }
+    
     checkCollisions(){
         if (this.reflected){
             this.checkHitEnemy();

@@ -8,9 +8,10 @@ export default class Ship{
         this.health = 100;
         this.hitboxRadius = options.hitboxRadius || 25;
         this.hurtboxRadius = options.hurtboxRadius || 25;
-        this.color = options.color || "black";
+        this.color = options.color || "red";
         this.game = options.game;
         this.pos = [options.pos[0], options.pos[1]];
+        this.focus = false;
         
         //Movement
         this.vel = [0, 0];
@@ -20,7 +21,7 @@ export default class Ship{
         this.knockback = false;
         this.weight = 1;
 
-        //Draw self sprite
+        //Drawing self sprite
         this.selfSprite = Images.defaultShip
         this.sprite = new Sprite({
             ctx: this.ctx,
@@ -38,30 +39,31 @@ export default class Ship{
 
     draw(){
         //DEBUG draw hitbox
-        this.ctx.beginPath(); 
-        this.ctx.arc(this.pos[0], this.pos[1], this.hitboxRadius, 0, Math.PI *2, false);
-        this.ctx.strokeStyle = "blue";
-        this.ctx.stroke(); 
-        if (this.hit){
-            this.ctx.fillStyle = "pink"; 
-        } else {
-            this.ctx.fillStyle = "white";
-        }
-        this.ctx.fill();
+        // this.ctx.beginPath(); 
+        // this.ctx.arc(this.pos[0], this.pos[1], this.hitboxRadius, 0, Math.PI *2, false);
+        // this.ctx.strokeStyle = "blue";
+        // this.ctx.stroke(); 
+        // if (this.hit){
+        //     this.ctx.fillStyle = "pink"; 
+        // } else {
+        //     this.ctx.fillStyle = "white";
+        // }
+        // this.ctx.fill();
 
-        //DEBUG draw hurtbox
-        this.ctx.beginPath(); 
-        this.ctx.arc(this.pos[0], this.pos[1], this.hurtboxRadius, 0, Math.PI *2, false);
-        this.ctx.strokeStyle = "blue";
-        this.ctx.stroke(); 
-        if (this.hit){
-            this.ctx.fillStyle = "red"; 
-        } else {
-            this.ctx.fillStyle = this.color; 
-        }
-
-        this.ctx.fill();
         this.sprite.draw(this.pos, this.game.mousePos);
+        
+        //Draw hurtbox when focus mode
+        if (this.focus){
+            this.ctx.beginPath(); 
+            this.ctx.arc(this.pos[0], this.pos[1], this.hurtboxRadius, 0, Math.PI *2, false);
+            
+            if (this.hit){
+                this.ctx.fillStyle = "white"; 
+            } else {
+                this.ctx.fillStyle = this.color; 
+            }
+            this.ctx.fill();
+        }
     }
 
     move(secondsPassed, delta){

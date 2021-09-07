@@ -27,7 +27,6 @@ export default class PlayerShip extends Ship{
         });
 
         //Throttles
-        console.log(this.game.delta)
         this.fire = Util.throttle(this.fire, 100 / this.game.delta, this);
         this.parry = Util.throttle(this.parry, 1500 / this.game.delta, this);
     }
@@ -49,12 +48,14 @@ export default class PlayerShip extends Ship{
 
     focusMode(){
         this.speed = this.focus_speed;
-        this.game.delta = 0.5;
+        this.focus = true;
+        // this.game.delta = 0.5;
     }
 
     unfocus(){
+        this.focus = false;
         this.speed = this.normalSpeed;
-        this.game.delta = 1;
+        // this.game.delta = 1;
     }
 
     fire(pos){
