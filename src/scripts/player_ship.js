@@ -1,10 +1,13 @@
 import Ship from "./ship"
+import Projectile from './projectile'
+import PlayerBullet from './playerBullet'
 import {Util} from "./util"
 
 export default class PlayerShip extends Ship{
     constructor(options){
         super(options);
-        this.hurtBoxRadius = 5;
+        this.hurtboxRadius = 5;
+        this.health = 3;
         //Movement
         this.speed = 8; 
         this.normalSpeed = this.speed;
@@ -12,7 +15,7 @@ export default class PlayerShip extends Ship{
         this.friction = .5;
 
         //Throttles
-        this.fire = Util.myThrottle(this.fire, 100);
+        this.fire = Util.throttle(this.fire, 100, this);
     }
 
     checkCollisions(objects){
@@ -38,6 +41,18 @@ export default class PlayerShip extends Ship{
     }
 
     fire(pos){
-        console.log("Firing")
-    }   
+        //let vect = Util.vect(this.pos, pos);
+        console.log(pos)
+        const tmp = new PlayerBullet({
+            ctx: this.ctx, 
+            game: this.game, 
+            pos: this.pos,
+            color: "yellow",
+            hurtboxRadius: 10,
+            hitboxRadius: 10,
+            dir: pos
+        })
+        //console.log(this.game.objects);
+        this.game.activeHitbox.push(tmp);
+    } 
 }

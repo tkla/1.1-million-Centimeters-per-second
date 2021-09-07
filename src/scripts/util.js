@@ -1,14 +1,26 @@
 export const Util = {
-    myThrottle(orig, interval){
+
+    throttle(fn, interval, context){
         let tooSoon = false;
-        let that = orig;
-        return function(){
+        let that = fn;
+        
+        return (...args)=> {
             if(!tooSoon){
                 tooSoon = true;
                 setTimeout( function(){tooSoon = false}, interval)
-                that(arguments);
+                that.call(context, ...args);
             }
         }
+    },
+
+    dist(pos1, pos2) {
+        return Math.sqrt(
+          Math.pow(pos1[0] - pos2[0], 2) + Math.pow(pos1[1] - pos2[1], 2)
+        );
+    },
+
+    vect(pos1, pos2){
+        return [pos1[0] - pos2[0], pos1[1]-pos2[1]]
     }
 }
 

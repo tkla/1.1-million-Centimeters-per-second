@@ -1,9 +1,16 @@
-const Util = require('./util');
+const {Util} = require('./util');
 
 export default class Ship{
 
     constructor(options){
         this.ctx = options.ctx;
+        this.health = 100;
+        this.hitboxRadius = options.hitboxRadius || 25;
+        this.hurtboxRadius = options.hurtboxRadius || 25;
+        this.color = options.color || "black";
+        this.game = options.game;
+        this.pos = [options.pos[0], options.pos[1]];
+        
         //Movement
         this.vel = [0, 0];
         this.speed = 1;
@@ -11,18 +18,12 @@ export default class Ship{
         this.knockbackFriction = 0.9;
         this.weight = 1;
 
-        this.hitboxRadius = 25;
-        this.hurtBoxRadius = 25;
-        this.game = options.game;
-        this.pos = [options.pos[0], options.pos[1]];
-        
         //Debug 
-        this.color = "black"
         this.hit = true; 
     }
 
     draw(){
-        //DEBUG ONLY
+        //DEBUG draw hitbox
         this.ctx.beginPath(); 
         this.ctx.arc(this.pos[0], this.pos[1], this.hitboxRadius, 0, Math.PI *2, false);
         this.ctx.strokeStyle = "blue";
@@ -30,22 +31,27 @@ export default class Ship{
         if (this.hit){
             this.ctx.fillStyle = "pink"; 
         } else {
-            this.ctx.fillStyle = "black";
+            this.ctx.fillStyle = "white";
         }
         this.ctx.fill();
 
-        //DEBUG ONLY
+        //DEBUG draw hurtbox
         this.ctx.beginPath(); 
-        this.ctx.arc(this.pos[0], this.pos[1], this.hurtBoxRadius, 0, Math.PI *2, false);
+        this.ctx.arc(this.pos[0], this.pos[1], this.hurtboxRadius, 0, Math.PI *2, false);
         this.ctx.strokeStyle = "blue";
         this.ctx.stroke(); 
-        this.ctx.fillStyle = "red"; 
+        if (this.hit){
+            this.ctx.fillStyle = "red"; 
+        } else {
+            this.ctx.fillStyle = this.color; 
+        }
+        
         this.ctx.fill();
     }
 
     move(){
         let norm = this.speed * .7101;
-        //Normalize diagonal vector
+        //Reduce diagonal speed
         if ( (Math.abs(this.vel[0]) >= norm) && (Math.abs(this.vel[1]) >= norm) ){
             this.vel[0] *= .7101;
             this.vel[1] *= .7101;
@@ -78,10 +84,8 @@ export default class Ship{
         let y_2 = other.pos[1];
         let dist = Math.sqrt((x_1 - x_2) ** 2 + (y_1 - y_2) ** 2);
     
-        return (dist < ((this.hurtBoxRadius + other.hitboxRadius)));
+        return (dist < ((this.hurtboxRadius + other.hitboxRadius)));
     }
-
-    fire(pos){
-        
-    }
+    
+    
 }

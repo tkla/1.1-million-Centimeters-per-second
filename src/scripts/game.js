@@ -1,3 +1,4 @@
+import Enemy from "./enemy/enemy";
 import Level from "./level"
 import PlayerShip from "./player_ship";
 import Ship from "./ship"
@@ -18,12 +19,31 @@ export default class Game{
 
         //Object array 
         this.objects = [];
-        const ship = new PlayerShip({ctx: this.ctx, game: this, pos: [this.DIM_X/2, this.DIM_Y*.8]});
-        const debug = new Ship({ctx: this.ctx, game: this, pos: [this.DIM_X/2, this.DIM_Y/2]});
-        this.debug = debug;
-        this.ship = ship;
-        this.objects.push(debug);
+        this.activeHitbox = [];
+        //Player ship 
+        const ship = new PlayerShip({
+            ctx: this.ctx, 
+            game: this,
+            pos: [this.DIM_X/2, this.DIM_Y*.8]
+        })
+        this.player = ship;
         this.objects.push(ship);
+
+        //Debug
+        const debug1 = new Enemy({
+            ctx: this.ctx, 
+            game: this, 
+            pos: [this.DIM_X/2, this.DIM_Y/2]
+        })
+        const debug2 = new Ship({
+            ctx: this.ctx, 
+            game: this, 
+            pos: [this.DIM_X/2, this.DIM_Y/3]
+        })
+        this.debug1 = debug1;
+        this.debug2 = debug2;
+        this.objects.push(debug1);
+        this.objects.push(debug2);
 
         //Setup listeners for keyboard and mouse. 
         this.key = {};
@@ -36,8 +56,8 @@ export default class Game{
     setupListeners(){
         document.addEventListener("keydown", e => this.key[e.code] = true, false);
         document.addEventListener("keyup", e => this.key[e.code] = false, false);
-        document.getElementById("moon_game").addEventListener("mousedown", e => this.key["mousedown"] = true, false)
-        document.getElementById("moon_game").addEventListener("mouseup", e => this.key["mousedown"] = false, false)
+        document.getElementById("moon_game").addEventListener("mousedown", e => this.key[e.button] = true, false)
+        document.getElementById("moon_game").addEventListener("mouseup", e => this.key[e.button] = false, false)
         this.ctx.canvas.addEventListener('mousemove', event => this.getMousePos(event))
     }
 
@@ -65,9 +85,15 @@ export default class Game{
     update(){
         this.checkKeys();
         //Calls each objects update function.
+        //console.log(this.objects);
         this.objects.forEach( obj =>{
             obj.update(this.objects);
         })
+        
+        this.activeHitbox.forEach( obj =>{
+            obj.update(this.objects);
+        })
+        
     }
 
     draw(){
@@ -77,57 +103,66 @@ export default class Game{
         this.objects.forEach( obj =>{
             obj.draw();
         })
+
+        this.activeHitbox.forEach( obj =>{
+            obj.draw();
+        })
     }
 
     checkKeys(){
         let acc = .8;
         //Directional keys
         if (this.key['KeyA']){
-            if (this.ship.vel[0] > -this.ship.speed){
-                this.ship.vel[0] -= this.ship.speed*(acc);
+            if (this.player.vel[0] > -this.player.speed){
+                this.player.vel[0] -= this.player.speed*(acc);
             }
-            if (this.ship.vel[0] < -this.ship.speed){
-                this.ship.vel[0] = -this.ship.speed;
+            if (this.player.vel[0] < -this.player.speed){
+                this.player.vel[0] = -this.player.speed;
             }
         }
         
         if (this.key['KeyD']){
-            if (this.ship.vel[0] < this.ship.speed){
-                this.ship.vel[0] += this.ship.speed*(acc);
+            if (this.player.vel[0] < this.player.speed){
+                this.player.vel[0] += this.player.speed*(acc);
             }
-            if (this.ship.vel[0] > this.ship.speed){
-                this.ship.vel[0] = this.ship.speed;
+            if (this.player.vel[0] > this.player.speed){
+                this.player.vel[0] = this.player.speed;
             }
         }
 
         if (this.key['KeyW']){
-            if (this.ship.vel[1] > -this.ship.speed){
-                this.ship.vel[1] -= this.ship.speed*(acc);
+            if (this.player.vel[1] > -this.player.speed){
+                this.player.vel[1] -= this.player.speed*(acc);
             }
 
-            if (this.ship.vel[1] < -this.ship.speed){
-                this.ship.vel[1] = -this.ship.speed;
+            if (this.player.vel[1] < -this.player.speed){
+                this.player.vel[1] = -this.player.speed;
             }
         }
         
         if (this.key['KeyS']){
-            if (this.ship.vel[1] < this.ship.speed){
-                this.ship.vel[1] += this.ship.speed*(acc);
+            if (this.player.vel[1] < this.player.speed){
+                this.player.vel[1] += this.player.speed*(acc);
             }
-            if (this.ship.vel[1] > this.ship.speed){
-                this.ship.vel[1] = this.ship.speed;
+            if (this.player.vel[1] > this.player.speed){
+                this.player.vel[1] = this.player.speed;
             }
         }
 
         //Slows down the ship when ship is held.
         if (this.key['ShiftLeft']){
-            this.ship.focusMode();
+            this.player.focusMode();
         }else {
-            this.ship.unfocus();
+            this.player.unfocus();
         }
 
-        if (this.key['mousedown']){
-            this.ship.fire(this.mousePos);
+        if (this.key[0]){
+            this.player.fire(this.mousePos);
+            this.debug1.fire(this.mousePos);
+        }
+
+        if (this.key[2]){
+            console.log("right click")
         }
     }
 
@@ -136,6 +171,6 @@ export default class Game{
         
         this.mousePos[0] = e.clientX - rect.left,
         this.mousePos[1] = e.clientY - rect.top
-        console.log(this.mousePos);
+        //console.log(this.mousePos);
     }
 }
