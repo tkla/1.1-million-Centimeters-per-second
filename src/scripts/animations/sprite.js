@@ -18,10 +18,10 @@ export default class Sprite{
         // let dx = pos[0] - this.dwidth/2;
         // let dy = pos[1] - this.dheight/2;
         
-        var angle = Math.atan2(
-            mousePos[0] - pos[0], 
-            -(mousePos[1] - pos[1]));
-
+        //Magic
+        var angle = Math.atan2(mousePos[0] - pos[0], -(mousePos[1] - pos[1]));
+        
+        //console.log(angle);
         this.ctx.setTransform(1, 0, 0, 1, pos[0], pos[1]); 
         this.ctx.rotate(angle)
 
