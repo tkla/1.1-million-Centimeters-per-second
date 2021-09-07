@@ -21,11 +21,9 @@ export default class PlayerShip extends Ship{
 
     checkCollisions(){
         let objects = this.game.objects;
-        for (let i = 0; i< objects.length; i++){
-            if (this.isCollideWith(objects[i]) && objects[i] != this){
-                this.hit = true;
-                //this.getHit()
-            }
+        //this.checkHitEnemy();
+        if (this.hit){
+            //todo
         }
         let life = document.getElementById('main-stats-life'); 
         life.innerHTML  = `Life: ${this.health}`

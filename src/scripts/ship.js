@@ -90,6 +90,7 @@ export default class Ship{
             this.game.player.hit = true;
         } 
     }
+
     //Go towards pos2. Updates this.speed to new speed arg if given.
     pathTowards(pos1, pos2, speed = this.speed){
         this.speed = speed;
@@ -109,7 +110,7 @@ export default class Ship{
         let y_2 = other.pos[1];
         let dist = Math.sqrt((x_1 - x_2) ** 2 + (y_1 - y_2) ** 2);
     
-        return (dist < ((this.hurtboxRadius + other.hitboxRadius)));
+        return (dist < ((this.hitboxRadius + other.hurtboxRadius)));
     }
     
     
