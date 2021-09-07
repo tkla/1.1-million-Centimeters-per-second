@@ -64,18 +64,42 @@ export default class Ship{
         this.vel[0] *= this.friction;
     }
 
-    update(objects){
+    update(){
         this.hit = false;
         this.move();
-        this.checkCollisions(objects);
+        this.checkCollisions();
     }
 
-    checkCollisions(objects){
-        for (let i = 0; i< objects.length; i++){
-            if (this.isCollideWith(objects[i]) && objects[i] != this){
+    checkCollisions(){
+        this.checkHitPlayer();
+    }
+
+    checkHitEnemy(){
+        let objects = this.game.objects;
+        for (let i = 0; i < objects.length; i++){
+            if (this.isCollideWith(objects[i]) && objects[i] != this && objects[i] != this.game.player){
                 this.hit = true;
+                objects[i].hit = true;
             }
         }
+    }
+
+    checkHitPlayer(){
+        if (this.isCollideWith(this.game.player)){
+            this.hit = true;
+            this.game.player.hit = true;
+        } 
+    }
+    //Go towards pos2. Updates this.speed to new speed arg if given.
+    pathTowards(pos1, pos2, speed = this.speed){
+        this.speed = speed;
+        var dx = (pos2[0] - pos1[0]);
+        var dy = (pos2[1] - pos1[1]);
+        var mag = Math.sqrt(dx * dx + dy * dy);
+
+
+        this.vel[0] = (dx / mag) * speed;
+        this.vel[1] = (dy / mag) * speed;
     }
 
     isCollideWith = function(other) {

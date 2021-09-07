@@ -1,6 +1,6 @@
 import Ship from "./ship"
-import Projectile from './projectile'
-import PlayerBullet from './playerBullet'
+import PlayerBullet from './projectiles/playerBullet'
+import MeleeProjectile from "./projectiles/meleeProjectile";
 import {Util} from "./util"
 
 export default class PlayerShip extends Ship{
@@ -16,9 +16,11 @@ export default class PlayerShip extends Ship{
 
         //Throttles
         this.fire = Util.throttle(this.fire, 100, this);
+        this.parry = Util.throttle(this.parry, 1500, this);
     }
 
-    checkCollisions(objects){
+    checkCollisions(){
+        let objects = this.game.objects;
         for (let i = 0; i< objects.length; i++){
             if (this.isCollideWith(objects[i]) && objects[i] != this){
                 this.hit = true;
@@ -44,7 +46,6 @@ export default class PlayerShip extends Ship{
 
     fire(pos){
         //let vect = Util.vect(this.pos, pos);
-        console.log(pos)
         const tmp = new PlayerBullet({
             ctx: this.ctx, 
             game: this.game, 
@@ -58,7 +59,16 @@ export default class PlayerShip extends Ship{
         this.game.activeHitbox.push(tmp);
     } 
 
-    parry(){
-        
+    parry(pos){
+        const tmp = new MeleeProjectile({
+            ctx: this.ctx, 
+            game: this.game, 
+            pos: this.pos,
+            color: "green",
+            hurtboxRadius: 17,
+            hitboxRadius: 35,
+            dir: pos
+        })
+        this.game.activeHitbox.push(tmp);
     }
 }

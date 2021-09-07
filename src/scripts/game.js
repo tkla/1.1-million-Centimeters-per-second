@@ -85,13 +85,13 @@ export default class Game{
     update(){
         this.checkKeys();
         //Calls each objects update function.
-        //console.log(this.objects);
+        //console.log(this.activeHitbox);
         this.objects.forEach( obj =>{
-            obj.update(this.objects);
+            obj.update();
         })
         
         this.activeHitbox.forEach( obj =>{
-            obj.update(this.objects);
+            obj.update();
         })
         
     }
@@ -155,14 +155,14 @@ export default class Game{
         }else {
             this.player.unfocus();
         }
-
+        //Left click = 0, Right click = 2
         if (this.key[0]){
             this.player.fire(this.mousePos);
             this.debug1.fire(this.mousePos);
         }
 
         if (this.key[2]){
-            console.log("right click")
+            this.player.parry(this.mousePos);
         }
     }
 

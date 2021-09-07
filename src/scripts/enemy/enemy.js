@@ -1,5 +1,5 @@
 import Ship from '../ship'
-import Projectile from '../projectile'
+import Projectile from '../projectiles/projectile'
 import {Util} from '../util'
 
 export default class Enemy extends Ship{

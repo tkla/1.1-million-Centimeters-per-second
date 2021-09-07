@@ -7,13 +7,8 @@ export default class PlayerBullet extends Projectile{
         this.pathTowards(this.pos, this.dir)
     }
 
-    checkCollisions(objects){
-        for (let i = 0; i< objects.length; i++){
-            if (this.isCollideWith(objects[i]) && objects[i] != this && objects[i] != this.game.player){
-                this.hit = true;
-                objects[i].hit = true;
-            }
-        }
+    checkCollisions(){
+        this.checkHitEnemy();
 
         // Boundary Collision
         let right = (this.pos[0] > this.game.DIM_X);
