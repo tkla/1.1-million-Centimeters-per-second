@@ -10,6 +10,7 @@ export default class Projectile extends Ship{
         this.reflected = false;
         this.health = 10000;
         this.knockbackMax = 2;
+        this.damage = 1;
         this.dir = options.dir; 
 
         this.sprite = new Sprite({

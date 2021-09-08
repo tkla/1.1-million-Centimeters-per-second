@@ -13,24 +13,19 @@ export default class Game{
         this.DIM_X = ctx.canvas.width;
         this.DIM_Y = ctx.canvas.height;
 
-        //1 tick per roughly 16ms.
-        this.TICK = 1000/60;
+        //1 tick per roughly 16ms. Use delta time for slowdown/speedup game clock
         this.delta = 1;
 
-         //Setup listeners for keyboard and mouse. 
-         this.key = {};
-         this.mousePos = [0,0]
-         this.setupListeners();
-
-        //Level 
-        const level = new Level(ctx);
-        this.level = level;
-
+        //Setup listeners for keyboard and mouse. 
+        this.key = {};
+        this.mousePos = [0,0]
+        this.setupListeners();
+        
         //Object arrays 
         this.objects = [];
         this.activeHitbox = [];
         this.sprites = [];
-
+       
         //Cursor 
         const cursor = new Sprite({
             ctx: this.ctx,
@@ -53,23 +48,28 @@ export default class Game{
         this.objects.push(ship);
 
         //Debug---------------------------------------
-        const debug1 = new Enemy({
-            ctx: this.ctx, 
-            game: this, 
-            pos: [this.DIM_X/2, this.DIM_Y/2]
-        })
-        const debug2 = new Enemy({
-            ctx: this.ctx, 
-            game: this, 
-            pos: [this.DIM_X/2, this.DIM_Y/3]
-        })
-        this.debug1 = debug1;
-        this.debug2 = debug2;
-        this.objects.push(debug1);
-        this.objects.push(debug2);
+        // const debug1 = new Enemy({
+        //     ctx: this.ctx, 
+        //     game: this, 
+        //     pos: [this.DIM_X/2, this.DIM_Y/2]
+        // })
+        // const debug2 = new Enemy({
+        //     ctx: this.ctx, 
+        //     game: this, 
+        //     pos: [this.DIM_X/2, this.DIM_Y/3]
+        // })
+        // this.debug1 = debug1;
+        // this.debug2 = debug2;
+        // this.objects.push(debug1);
+        // this.objects.push(debug2);
         //--------------------------------------------
 
-       
+        //Level 
+        const level = new Level({
+            ctx: this.ctx,
+            game: this 
+        });
+        this.level = level;
         //Game loop start
         this.secondsPassed = 0;
         this.oldTimeStamp= 0;
@@ -105,6 +105,8 @@ export default class Game{
         this.checkKeys();
         //Calls each objects update function.
         //console.log(this.activeHitbox);
+        this.level.update();
+        console.log(this.objects);
         this.objects.forEach( obj =>{
             obj.update(secondsPassed, delta );
         })
@@ -186,9 +188,7 @@ export default class Game{
         }
         //Left click = 0, Right click = 2
         if (this.key[0]){
-            this.objects.forEach ( i=> 
-                i.fire(this.mousePos)
-            )
+            this.player.fire(this.mousePos);
         }
 
         if (this.key[2]){

@@ -64,6 +64,8 @@ export default class MeleeProjectile extends Projectile{
             if (this.isCollideWith(objects[i]) && objects[i] != this && !(objects[i] instanceof(PlayerBullet)) ){
                 this.hit = true;
                 objects[i].hit = true;
+                objects[i].damage = 100;
+                //objects[i].hitRadius = 40;
                 this.reflect(objects[i]);
             }
         }
@@ -74,7 +76,7 @@ export default class MeleeProjectile extends Projectile{
     reflect(object){
         object.knockback = true;
         object.reflected = true;
-        object.pathTowards(object.pos, this.game.mousePos, 30)
+        object.pathTowards(object.pos, this.game.mousePos, 40)
     }
 
     

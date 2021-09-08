@@ -98,7 +98,7 @@ export default class Ship{
             if (this.isCollideWith(objects[i]) && objects[i] != this && objects[i] != this.game.player){
                 this.hit = true;
                 objects[i].hit = true;
-                objects[i].health--;
+                objects[i].health -= this.damage;
                 result = true;
             }
         }
