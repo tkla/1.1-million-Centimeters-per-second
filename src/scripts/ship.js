@@ -30,8 +30,17 @@ export default class Ship{
             image: Images.defaultShip
         });
 
-        //Debug 
-        //this.hit = true; 
+        this.hitSprite = new Sprite({
+            ctx: this.ctx,
+            swidth: 128,
+            sheight: 128,
+            dwidth: 64,
+            dheight: 64,
+            image: Images.playerShip
+        })
+
+        this.currSprite = this.sprite;
+        this.hit = false; 
         
     }
 
@@ -49,9 +58,14 @@ export default class Ship{
         // this.ctx.fill();
         
         //Sprite drawing
-        this.sprite.update();
-        this.sprite.draw(this.pos, this.game.mousePos);
+        this.currSprite.update();
+        this.currSprite.draw(this.pos, this.game.mousePos);
         
+        if (this.Hit){
+            this.currSprite = this.hitSprite;
+        } else {
+            this.currSprite = this.sprite;
+        }
         //Draw hurtbox when focus mode
         if (this.focus){
             this.ctx.beginPath(); 
@@ -76,19 +90,25 @@ export default class Ship{
         
         this.pos[0] += (this.vel[0] * delta);
         this.pos[1] += (this.vel[1] * delta);
-        this.vel[1] *= this.friction;
-        this.vel[0] *= this.friction;
+        if (this.knockback) {
+            this.vel[1] *= this.knockbackFriction;
+            this.vel[0] *= this.knockbackFriction;
+        }else { 
+            this.vel[1] *= this.friction;
+            this.vel[0] *= this.friction;
+        }
+       
     }
 
     update(secondsPassed, delta){
-        this.hit = false;
+        //this.hit = false;
         this.move(secondsPassed, delta);
         this.checkCollisions();
         if (this.health <= 0) this.removeSelf();
     }
 
     checkCollisions(){
-        this.checkHitPlayer();
+        if (!this.knockback) this.checkHitPlayer();
     }
 
     checkHitEnemy(){

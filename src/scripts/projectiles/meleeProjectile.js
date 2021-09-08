@@ -69,14 +69,25 @@ export default class MeleeProjectile extends Projectile{
                 this.reflect(objects[i]);
             }
         }
-        
-        this.checkHitEnemy();
+
+        objects = this.game.objects
+        for (let i = 1;  i< objects.length; i++){
+            if (this.isCollideWith(objects[i]) && objects[i] != this && !(objects[i] instanceof(PlayerBullet)) ){
+                this.hit = true;
+                objects[i].hit = true;
+                objects[i].damage = 100;
+                objects[i].health -= this.damage;
+                this.reflect(objects[i]);
+                setTimeout( ()=> objects[i].repath(), 1200)
+            }
+        }
+        //this.checkHitEnemy();
     }
 
     reflect(object){
         object.knockback = true;
         object.reflected = true;
-        object.pathTowards(object.pos, this.game.mousePos, 40)
+        object.pathTowards(object.pos, this.game.mousePos, 30/object.weight)
     }
 
     

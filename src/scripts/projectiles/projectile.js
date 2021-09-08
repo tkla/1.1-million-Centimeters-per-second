@@ -6,8 +6,10 @@ export default class Projectile extends Ship{
     constructor(options){
         super(options);
         this.friction = 1;
+        this.knockbackFriction = 1;
         this.speed = 5;
         this.reflected = false;
+        this.weight = 1;
         this.health = 10000;
         this.knockbackMax = 2;
         this.damage = 1;
@@ -55,7 +57,6 @@ export default class Projectile extends Ship{
         //     this.ctx.fillStyle = 'red'; 
         // }
         // this.ctx.fill();
-        
     }
 
     spawnBulletFront(dist){
@@ -69,7 +70,7 @@ export default class Projectile extends Ship{
 
     checkCollisions(){
         if (this.reflected){
-            if (this.checkHitEnemy()) this.removeSelf();
+           this.checkHitEnemy();
         } else {
             if (this.checkHitPlayer()) this.removeSelf();
         }

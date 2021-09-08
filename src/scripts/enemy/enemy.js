@@ -6,10 +6,15 @@ import EnemyProjectile from '../projectiles/enemyProjectile';
 export default class Enemy extends Ship{
     constructor(options){
         super(options)
-        this.friction = 0;
+        this.friction = 1;
+        this.knockbackFriction = .95;
         this.hurtboxRadius = 20;
+        this.reflected = false;
+        this.weight = 2;
         this.fire = Util.throttle(this.fire, (500 / this.game.delta), this);
         //this.pathTowards(this.pos, this.dir)
+        this.origPath = [0,0];
+        this.origSpeed = 0;
     }
 
     fire(pos){
@@ -25,10 +30,40 @@ export default class Enemy extends Ship{
         
         this.game.activeHitbox.push(tmp);
     }
+
+    pathTowards(pos1, pos2, speed = this.speed){
+        this.speed = speed;
+        var dx = (pos2[0] - pos1[0]);
+        var dy = (pos2[1] - pos1[1]);
+        var mag = Math.sqrt(dx * dx + dy * dy);
+
+
+        this.vel[0] = (dx / mag) * speed;
+        this.vel[1] = (dy / mag) * speed;
+        if (!this.knockback) {
+            this.origPath = pos2;
+            this.origSpeed = speed;
+        }
+        
+    }
+  
+    repath(){
+        this.knockback = false;
+        this.pathTowards(this.pos, this.origPath, this.origSpeed)
+    }
     
     draw(){
         //Sprite drawing
-        this.sprite.update();
-        this.sprite.draw(this.pos, this.game.player.pos);
+        console.log(this.currSprite.image)
+        if (this.Hit){
+            this.currSprite = this.hitSprite;
+        } else {
+            this.currSprite = this.sprite;
+        }
+
+        this.currSprite.update();
+        this.currSprite.draw(this.pos, this.game.player.pos);
+
+        
     }
 }

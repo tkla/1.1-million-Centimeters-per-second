@@ -104,9 +104,8 @@ export default class Game{
     update(secondsPassed, delta){
         this.checkKeys();
         //Calls each objects update function.
-        //console.log(this.activeHitbox);
         this.level.update();
-        console.log(this.objects);
+        //console.log(this.objects);
         this.objects.forEach( obj =>{
             obj.update(secondsPassed, delta );
         })
