@@ -10,6 +10,7 @@ export default class Enemy extends Ship{
         this.knockbackFriction = .95;
         this.hurtboxRadius = 20;
         this.reflected = false;
+        this.health = 50;
         this.weight = 2;
         this.fire = Util.throttle(this.fire, (500 / this.game.delta), this);
         //this.pathTowards(this.pos, this.dir)
@@ -52,9 +53,18 @@ export default class Enemy extends Ship{
         this.pathTowards(this.pos, this.origPath, this.origSpeed)
     }
     
+    recoverKnockback(damage){
+        setTimeout( ()=>{ 
+            if (this){
+                this.repath();
+                this.health -= damage;
+            } 
+            
+        }, 1000*this.game.delta)
+    }
     draw(){
         //Sprite drawing
-        console.log(this.currSprite.image)
+        //console.log(this.currSprite.image)
         if (this.Hit){
             this.currSprite = this.hitSprite;
         } else {
@@ -63,7 +73,5 @@ export default class Enemy extends Ship{
 
         this.currSprite.update();
         this.currSprite.draw(this.pos, this.game.player.pos);
-
-        
     }
 }

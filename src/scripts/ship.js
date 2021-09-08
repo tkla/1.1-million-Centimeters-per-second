@@ -104,11 +104,12 @@ export default class Ship{
         //this.hit = false;
         this.move(secondsPassed, delta);
         this.checkCollisions();
-        if (this.health <= 0) this.removeSelf();
+        if (this.health <= 0 && !this.knockback) this.removeSelf();
     }
 
     checkCollisions(){
-        if (!this.knockback) this.checkHitPlayer();
+        if (!this.knockback) this.checkHitPlayer()
+        else this.checkHitEnemy();
     }
 
     checkHitEnemy(){

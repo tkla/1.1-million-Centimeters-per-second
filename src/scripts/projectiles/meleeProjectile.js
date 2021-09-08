@@ -10,6 +10,7 @@ export default class MeleeProjectile extends Projectile{
         
         this.pathTowards(this.pos, this.dir);
         this.spawnBulletFront(50);
+        this.damage = 50;
         this.sprite = new Sprite({
             ctx: this.ctx,
             swidth: 55,
@@ -73,12 +74,14 @@ export default class MeleeProjectile extends Projectile{
         objects = this.game.objects
         for (let i = 1;  i< objects.length; i++){
             if (this.isCollideWith(objects[i]) && objects[i] != this && !(objects[i] instanceof(PlayerBullet)) ){
+                if (objects[i].knockback) continue;
                 this.hit = true;
                 objects[i].hit = true;
                 objects[i].damage = 100;
-                objects[i].health -= this.damage;
+                //objects[i].health -= this.damage;
                 this.reflect(objects[i]);
-                setTimeout( ()=> objects[i].repath(), 1200)
+                objects[i].recoverKnockback(this.damage);
+                
             }
         }
         //this.checkHitEnemy();

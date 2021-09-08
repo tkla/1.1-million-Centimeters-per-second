@@ -13,7 +13,7 @@ export default class Level {
     }
 
     loadLevel(){
-        for (let i = 0; i < 100; i++){
+        for (let i = 0; i < 5; i++){
 
             const enemy = new Enemy({
                 ctx: this.ctx, 
@@ -51,7 +51,7 @@ export default class Level {
 
         if (this.time >= 120 && this.time <= 3000){
             for (let i = 1; i < this.game.objects.length; i++){
-                this.game.objects[i].fire(this.game.player.pos)
+               // this.game.objects[i].fire(this.game.player.pos)
             }
         }
 
