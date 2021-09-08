@@ -1,18 +1,17 @@
 import {Images} from './animations/image_source'
 import Sprite from "./animations/sprite"
-
 export default class Ship{
 
     constructor(options){
         this.ctx = options.ctx;
-        this.health = 100;
+        this.health = 40;
         this.hitboxRadius = options.hitboxRadius || 25;
         this.hurtboxRadius = options.hurtboxRadius || 25;
         this.color = options.color || "red";
         this.game = options.game;
         this.pos = [options.pos[0], options.pos[1]];
         this.focus = false;
-        
+        this.player = false;
         //Movement
         this.vel = [0, 0];
         this.speed = 1;
@@ -22,18 +21,17 @@ export default class Ship{
         this.weight = 1;
 
         //Drawing self sprite
-        this.selfSprite = Images.defaultShip
         this.sprite = new Sprite({
             ctx: this.ctx,
             swidth: 128,
             sheight: 128,
             dwidth: 64,
             dheight: 64,
-            image: this.selfSprite
+            image: Images.defaultShip
         });
 
         //Debug 
-        this.hit = true; 
+        //this.hit = true; 
         
     }
 
@@ -86,6 +84,8 @@ export default class Ship{
         this.hit = false;
         this.move(secondsPassed, delta);
         this.checkCollisions();
+        console.log(this.health)
+        if (this.health <= 0) this.removeSelf();
     }
 
     checkCollisions(){
@@ -98,6 +98,7 @@ export default class Ship{
             if (this.isCollideWith(objects[i]) && objects[i] != this && objects[i] != this.game.player){
                 this.hit = true;
                 objects[i].hit = true;
+                objects[i].health--;
             }
         }
     }
@@ -127,9 +128,14 @@ export default class Ship{
         let x_2 = other.pos[0];
         let y_2 = other.pos[1];
         let dist = Math.sqrt((x_1 - x_2) ** 2 + (y_1 - y_2) ** 2);
-    
+        if (other.player){
+            if (dist < (this.hitboxRadius + other.hitboxRadius) ) other.score+= 2;
+        }
         return (dist < ((this.hitboxRadius + other.hurtboxRadius)));
     }
     
-    
+    removeSelf(){
+        let idx = this.game.objects.indexOf(this);
+        this.game.objects.splice(idx, 1);
+    }
 }

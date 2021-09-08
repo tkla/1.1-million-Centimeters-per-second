@@ -11,7 +11,6 @@ export default class Projectile extends Ship{
         this.knockbackMax = 2;
         this.dir = options.dir; 
 
-        this.selfSprite = Images.bulletImage
         this.sprite = new Sprite({
             ctx: this.ctx,
             swidth: 100,
@@ -20,7 +19,7 @@ export default class Projectile extends Ship{
             dx: this.pos[0],
             dwidth: 100,
             dheight: 100,
-            image: this.selfSprite
+            image: Images.bulletImage
         });
 
         //Pathing
@@ -32,28 +31,28 @@ export default class Projectile extends Ship{
         
         this.sprite.draw(this.pos, this.game.mousePos, false);
         
-        //DEBUG draw hitbox
-        this.ctx.beginPath(); 
-        this.ctx.arc(this.pos[0], this.pos[1], this.hitboxRadius, 0, Math.PI *2, false);
-        this.ctx.strokeStyle = "blue";
-        this.ctx.stroke(); 
-        if (this.hit){
-            this.ctx.fillStyle = "pink"; 
-        } else {
-            this.ctx.fillStyle = "white";
-        }
-        this.ctx.fill();
+        // //DEBUG draw hitbox
+        // this.ctx.beginPath(); 
+        // this.ctx.arc(this.pos[0], this.pos[1], this.hitboxRadius, 0, Math.PI *2, false);
+        // this.ctx.strokeStyle = "blue";
+        // this.ctx.stroke(); 
+        // if (this.hit){
+        //     this.ctx.fillStyle = "pink"; 
+        // } else {
+        //     this.ctx.fillStyle = "white";
+        // }
+        // this.ctx.fill();
         
-        //Debug hurtbox
-        this.ctx.beginPath(); 
-        this.ctx.arc(this.pos[0], this.pos[1], this.hurtboxRadius, 0, Math.PI *2, false);
+        // //Debug hurtbox
+        // this.ctx.beginPath(); 
+        // this.ctx.arc(this.pos[0], this.pos[1], this.hurtboxRadius, 0, Math.PI *2, false);
         
-        if (this.hit){
-            this.ctx.fillStyle = "white"; 
-        } else {
-            this.ctx.fillStyle = 'red'; 
-        }
-        this.ctx.fill();
+        // if (this.hit){
+        //     this.ctx.fillStyle = "white"; 
+        // } else {
+        //     this.ctx.fillStyle = 'red'; 
+        // }
+        // this.ctx.fill();
         
     }
 
@@ -84,13 +83,11 @@ export default class Projectile extends Ship{
 
         if (!this.knockback || this.knockbackMax <= 0){
             if (right || left || down || up){
-                let idx = this.game.activeHitbox.indexOf(this);
-                this.game.activeHitbox.splice(idx,1);
+                this.removeSelf()
             }
         }else{
             if (up) {
-                let idx = this.game.activeHitbox.indexOf(this);
-                this.game.activeHitbox.splice(idx,1);
+                this.removeSelf()
             }
             if (right || left){
                 this.knockbackMax--;
@@ -102,5 +99,10 @@ export default class Projectile extends Ship{
             }
         }
         
+    }
+
+    removeSelf(){
+        let idx = this.game.activeHitbox.indexOf(this);
+        this.game.activeHitbox.splice(idx, 1);
     }
 }

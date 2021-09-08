@@ -10,7 +10,6 @@ export default class MeleeProjectile extends Projectile{
         
         this.pathTowards(this.pos, this.dir);
         this.spawnBulletFront(50);
-        this.selfSprite = Images.axe
         this.sprite = new Sprite({
             ctx: this.ctx,
             swidth: 55,
@@ -19,7 +18,7 @@ export default class MeleeProjectile extends Projectile{
             dheight: 110,
             frameMax: 1,
             ticksPerFrame: 1,
-            image: this.selfSprite
+            image: Images.axe
         });
         setTimeout(() => this.removeSelf(), 100 / this.game.delta);
     }
@@ -78,8 +77,5 @@ export default class MeleeProjectile extends Projectile{
         object.pathTowards(object.pos, this.game.mousePos, 30)
     }
 
-    removeSelf(){
-        let idx = this.game.activeHitbox.indexOf(this);
-        this.game.activeHitbox.splice(idx, 1);
-    }
+    
 }

@@ -46,7 +46,7 @@ body {
   flex-direction: row;
   justify-content: flex-start;
   align-items: flex-start;
-  width: 1500px;
+  width: 1600px;
   height: 900px;
 }
 
@@ -58,6 +58,8 @@ body {
 
 #moon_game {
   border-color: grey;
+  cursor: none;
+  cursor: hidden;
 }
 
 .main-stats {

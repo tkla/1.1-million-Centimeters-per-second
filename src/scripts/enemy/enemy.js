@@ -6,7 +6,7 @@ import EnemyProjectile from '../projectiles/enemyProjectile';
 export default class Enemy extends Ship{
     constructor(options){
         super(options)
-        this.fire = Util.throttle(this.fire, (100 / this.game.delta), this);
+        this.fire = Util.throttle(this.fire, (200 / this.game.delta), this);
     }
 
     fire(pos){

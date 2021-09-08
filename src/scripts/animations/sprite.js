@@ -5,8 +5,8 @@ export default class Sprite{
         this.ctx = options.ctx;
         this.swidth = options.swidth;
         this.sheight = options.sheight;
-        this.dwidth = options.dwidth;
-        this.dheight = options.dheight;
+        this.dwidth = options.dwidth || this.swidth;
+        this.dheight = options.dheight || this.sheight;
         this.image = options.image;
 
         this.frameMax = options.frameMax || 1;
@@ -16,6 +16,8 @@ export default class Sprite{
         this.angle = 0;
         this.rotate = true;
 
+        //Default pos used for drawing tmp stationary particles
+        this.pos = options.pos 
         //I hate this line
         this.offsetPos = null;
     }
@@ -32,8 +34,8 @@ export default class Sprite{
             }
         }
     }
-
-    draw(pos, mousePos, rotateNext=true){
+    
+    draw(pos=this.pos, mousePos=this.pos, rotateNext=true){
         this.ctx.setTransform(1, 0, 0, 1, pos[0], pos[1]);
 
         if (this.rotate){
@@ -61,7 +63,7 @@ export default class Sprite{
     }
 
 
-    //Refactor later? It's a really jank workaround to offset a sprite by some distance
+    //Refactor later? It's a really jank workaround to offset a sprite by some distance. Like it's absolutely lazy hack.
     drawMelee(pos, mousePos, rotateNext=true){
         this.offsetPos = this.offset(pos, mousePos, 30);
 

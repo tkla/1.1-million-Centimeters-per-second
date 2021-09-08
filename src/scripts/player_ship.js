@@ -9,43 +9,77 @@ export default class PlayerShip extends Ship{
     constructor(options){
         super(options);
         this.hurtboxRadius = 7;
+        this.hitboxRadius = 35;
         this.health = 3;
+        this.score = 0;
+        this.player = true;
         //Movement
         this.speed = 8; 
         this.normalSpeed = this.speed;
         this.focus_speed = this.speed/2; 
         this.friction = .5;
+        
         //Draw self sprite
-        this.selfSprite = Images.playerShip
         this.sprite = new Sprite({
             ctx: this.ctx,
             swidth: 128,
             sheight: 128,
             dwidth: 128,
             dheight: 128,
-            image: this.selfSprite
+            image: Images.playerShip
         });
 
         //Throttles
         this.fire = Util.throttle(this.fire, 100 / this.game.delta, this);
-        this.parry = Util.throttle(this.parry, 101 / this.game.delta, this);
+        this.parry = Util.throttle(this.parry, 1000 / this.game.delta, this);
+        this.getHit = Util.throttle(this.getHit, 500 / this.game.delta, this);
+        //this.reduceLife =
+    }
+
+    update(secondsPassed, delta){
+        // this.hit = false;
+        this.move(secondsPassed, delta);
+        this.checkCollisions();
+        if (this.health <= 0) this.removeSelf();
     }
 
     checkCollisions(){
         let objects = this.game.objects;
+        // if (this.checkGraze()){
+        //     this.score += 2;
+        // }
         //this.checkHitEnemy();
         if (this.hit){
-            //todo
+            this.getHit()
         }
-        let life = document.getElementById('main-stats-life'); 
-        life.innerHTML  = `Life: ${this.health}`
+        let life = document.getElementById('main-stats-life');
+        let score = document.getElementById('main-stats-score'); 
+        life.innerHTML  = `Life: ` + `${this.health}`.padStart(5, '0');
+        score.innerHTML  = `Score: ` + `${this.score}`.padStart(5, 0);
         if (this.pos[0] > this.game.DIM_X) this.pos[0] = this.game.DIM_X;
         if (this.pos[0] < 0) this.pos[0] = 0;
         if (this.pos[1] > this.game.DIM_Y) this.pos[1] = this.game.DIM_Y;
         if (this.pos[1] < 0) this.pos[1] = 0;
     }
 
+    getHit(){
+        this.health--;
+        this.game.delta *= 0.5
+        setTimeout ( () => {
+            this.game.delta = 1;
+            this.hit = false;
+        }, 500)
+    }
 
+    isCollideWith = function(other) {
+        let x_1 = this.pos[0];
+        let y_1 = this.pos[1];
+        let x_2 = other.pos[0];
+        let y_2 = other.pos[1];
+        let dist = Math.sqrt((x_1 - x_2) ** 2 + (y_1 - y_2) ** 2);
+    
+        return (dist < ((this.hitboxRadius + other.hurtboxRadius)));
+    }
     focusMode(){
         this.speed = this.focus_speed;
         this.focus = true;

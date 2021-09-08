@@ -2,7 +2,8 @@ import Enemy from "./enemy/enemy";
 import Level from "./level"
 import PlayerShip from "./player_ship";
 import Ship from "./ship"
-//import Sprite from './animations/sprite'
+import {Images} from './animations/image_source'
+import Sprite from './animations/sprite'
 
 
 export default class Game{
@@ -15,7 +16,12 @@ export default class Game{
         //1 tick per roughly 16ms.
         this.TICK = 1000/60;
         this.delta = 1;
-        
+
+         //Setup listeners for keyboard and mouse. 
+         this.key = {};
+         this.mousePos = [0,0]
+         this.setupListeners();
+
         //Level 
         const level = new Level(ctx);
         this.level = level;
@@ -24,6 +30,18 @@ export default class Game{
         this.objects = [];
         this.activeHitbox = [];
         this.sprites = [];
+
+        //Cursor 
+        //this.cursor = Images.crosshair
+        this.cursor = new Sprite({
+            ctx: this.ctx,
+            swidth: 32,
+            sheight: 32,
+            rotate: false,
+            pos: this.mousePos,
+            image: Images.crosshair
+        });
+        this.sprites.push(this.cursor)
 
         //Player ship 
         const ship = new PlayerShip({
@@ -35,25 +53,23 @@ export default class Game{
         this.objects.push(ship);
 
         //Debug---------------------------------------
-            const debug1 = new Enemy({
-                ctx: this.ctx, 
-                game: this, 
-                pos: [this.DIM_X/2, this.DIM_Y/2]
-            })
-            const debug2 = new Ship({
-                ctx: this.ctx, 
-                game: this, 
-                pos: [this.DIM_X/2, this.DIM_Y/3]
-            })
-            this.debug1 = debug1;
-            this.debug2 = debug2;
-            this.objects.push(debug1);
-            this.objects.push(debug2);
+        const debug1 = new Enemy({
+            ctx: this.ctx, 
+            game: this, 
+            pos: [this.DIM_X/2, this.DIM_Y/2]
+        })
+        const debug2 = new Enemy({
+            ctx: this.ctx, 
+            game: this, 
+            pos: [this.DIM_X/2, this.DIM_Y/3]
+        })
+        this.debug1 = debug1;
+        this.debug2 = debug2;
+        this.objects.push(debug1);
+        this.objects.push(debug2);
         //--------------------------------------------
-        //Setup listeners for keyboard and mouse. 
-        this.key = {};
-        this.mousePos = [0,0]
-        this.setupListeners();
+
+       
         //Game loop start
         this.secondsPassed = 0;
         this.oldTimeStamp= 0;
@@ -116,7 +132,7 @@ export default class Game{
         })
 
        
-
+        //this.cursor.draw(this.mousePos, this.mousePos, false)
         this.sprites.forEach( obj =>{
             obj.draw();
         })
@@ -170,8 +186,9 @@ export default class Game{
         }
         //Left click = 0, Right click = 2
         if (this.key[0]){
-            this.player.fire(this.mousePos);
-            this.debug1.fire(this.mousePos);
+            this.objects.forEach ( i=> 
+                i.fire(this.mousePos)
+            )
         }
 
         if (this.key[2]){
