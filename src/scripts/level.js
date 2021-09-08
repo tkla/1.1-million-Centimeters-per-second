@@ -32,25 +32,32 @@ export default class Level {
         console.log(this.time)
         if (this.time == this.maxTime){}
 
-        if (this.time >= 60 && this.time <= 200){
+        if (this.time >= 70 && this.time <= 200){
             
             let newPos = [2000, this.DIM_Y/3]
             for (let i = 1; i < this.game.objects.length; i++){
-                this.game.objects[i].pathTowards(this.game.objects[i].pos, newPos, 5)
+                this.game.objects[i].pathTowards(this.game.objects[i].pos, newPos, 3)
             }
         }
 
-        // if (this.time >= 120 && this.time <= 121){
-            
-        //     for (let i = 1; i < this.game.objects.length; i++){
-        //         let newPos = [this.game.objects[i].pos[0], 100]
-        //         this.game.objects[i].pathTowards(this.game.objects[i].pos, newPos, 10)
-        //     }
-        // }
 
-        if (this.time >= 120 && this.time <= 900){
+        if (this.time >= 201 && this.time <= 600){
+            
+            for (let i = 1; i < this.game.objects.length; i++){
+                let newPos = [this.game.objects[i].pos[0], 100]
+                this.game.objects[i].pathTowards(this.game.objects[i].pos, newPos, 1)
+            }
+        }
+
+        if (this.time >= 120 && this.time <= 700){
             for (let i = 1; i < this.game.objects.length; i++){
                 this.game.objects[i].fire(this.game.player.pos)
+            }
+        }
+
+        if (this.time >= 700 && this.time <= 700){
+            for (let i = 1; i < this.game.objects.length; i++){
+                this.game.objects[i].pathTowards(this.game.objects[i].pos, this.game.player.pos, 8)
             }
         }
     }
