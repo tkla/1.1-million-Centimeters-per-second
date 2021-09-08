@@ -32,16 +32,16 @@ export default class Game{
         this.sprites = [];
 
         //Cursor 
-        //this.cursor = Images.crosshair
-        this.cursor = new Sprite({
+        const cursor = new Sprite({
             ctx: this.ctx,
             swidth: 32,
             sheight: 32,
             rotate: false,
             pos: this.mousePos,
+            game: this,
             image: Images.crosshair
         });
-        this.sprites.push(this.cursor)
+        this.sprites.push(cursor)
 
         //Player ship 
         const ship = new PlayerShip({
@@ -131,7 +131,7 @@ export default class Game{
             obj.draw();
         })
 
-       
+        //console.log(this.sprites);
         //this.cursor.draw(this.mousePos, this.mousePos, false)
         this.sprites.forEach( obj =>{
             obj.draw();

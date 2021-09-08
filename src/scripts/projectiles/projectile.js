@@ -8,6 +8,7 @@ export default class Projectile extends Ship{
         this.friction = 1;
         this.speed = 5;
         this.reflected = false;
+        this.health = 10000;
         this.knockbackMax = 2;
         this.dir = options.dir; 
 
@@ -67,9 +68,9 @@ export default class Projectile extends Ship{
 
     checkCollisions(){
         if (this.reflected){
-            this.checkHitEnemy();
+            if (this.checkHitEnemy()) this.removeSelf();
         } else {
-            this.checkHitPlayer();
+            if (this.checkHitPlayer()) this.removeSelf();
         }
         
         // Boundary Collision

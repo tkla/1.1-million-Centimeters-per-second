@@ -84,7 +84,6 @@ export default class Ship{
         this.hit = false;
         this.move(secondsPassed, delta);
         this.checkCollisions();
-        console.log(this.health)
         if (this.health <= 0) this.removeSelf();
     }
 
@@ -94,20 +93,26 @@ export default class Ship{
 
     checkHitEnemy(){
         let objects = this.game.objects;
+        let result = false; 
         for (let i = 0; i < objects.length; i++){
             if (this.isCollideWith(objects[i]) && objects[i] != this && objects[i] != this.game.player){
                 this.hit = true;
                 objects[i].hit = true;
                 objects[i].health--;
+                result = true;
             }
         }
+        return result;
     }
 
     checkHitPlayer(){
+        let result = false; 
         if (this.isCollideWith(this.game.player)){
             this.hit = true;
-            this.game.player.hit = true;
+            this.game.player.getHit();
+            result = true;
         } 
+        return result;
     }
 
     //Go towards pos2. Updates this.speed to new speed arg if given.

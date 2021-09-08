@@ -1,4 +1,4 @@
-import {Images} from './image_source'
+//import {Images} from './image_source'
 
 export default class Sprite{
     constructor(options){
@@ -16,10 +16,24 @@ export default class Sprite{
         this.angle = 0;
         this.rotate = true;
 
-        //Default pos used for drawing tmp stationary particles
-        this.pos = options.pos 
+        //Options used for drawing tmp stationary particles
+        this.pos = options.pos; 
+        this.lifeTime = options.lifeTime;
+        this.game = options.game;
         //I hate this line
         this.offsetPos = null;
+
+        if (this.lifeTime){
+            setTimeout(
+                () => {this.removeSelf()}, this.lifeTime
+            );
+        }
+        
+    }
+
+    removeSelf(){
+        let idx = this.game.sprites.indexOf(this);
+        this.game.sprites.splice(idx, 1);
     }
 
     update(){   
@@ -35,7 +49,7 @@ export default class Sprite{
         }
     }
     
-    draw(pos=this.pos, mousePos=this.pos, rotateNext=true){
+    draw(pos = this.pos, mousePos = this.pos, rotateNext=true){
         this.ctx.setTransform(1, 0, 0, 1, pos[0], pos[1]);
 
         if (this.rotate){

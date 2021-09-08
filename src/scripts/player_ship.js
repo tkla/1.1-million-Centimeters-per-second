@@ -32,12 +32,10 @@ export default class PlayerShip extends Ship{
         //Throttles
         this.fire = Util.throttle(this.fire, 100 / this.game.delta, this);
         this.parry = Util.throttle(this.parry, 1000 / this.game.delta, this);
-        this.getHit = Util.throttle(this.getHit, 500 / this.game.delta, this);
-        //this.reduceLife =
+        this.getHit = Util.throttle(this.getHit, 1000 / this.game.delta, this);
     }
 
     update(secondsPassed, delta){
-        // this.hit = false;
         this.move(secondsPassed, delta);
         this.checkCollisions();
         if (this.health <= 0) this.removeSelf();
@@ -45,13 +43,10 @@ export default class PlayerShip extends Ship{
 
     checkCollisions(){
         let objects = this.game.objects;
-        // if (this.checkGraze()){
-        //     this.score += 2;
+
+        // if (this.hit){
+        //     this.getHit()
         // }
-        //this.checkHitEnemy();
-        if (this.hit){
-            this.getHit()
-        }
         let life = document.getElementById('main-stats-life');
         let score = document.getElementById('main-stats-score'); 
         life.innerHTML  = `Life: ` + `${this.health}`.padStart(5, '0');
@@ -65,10 +60,29 @@ export default class PlayerShip extends Ship{
     getHit(){
         this.health--;
         this.game.delta *= 0.5
+        this.hit = true;
+        
+        const sprite = new Sprite({
+            ctx: this.ctx,
+            swidth: 100,
+            sheight: 100,
+            dy: this.pos[1],
+            dx: this.pos[0],
+            dwidth: 100,
+            dheight: 100,
+            pos: this.pos,
+            game: this.game,
+            lifeTime: 50,
+            image: Images.bulletImage
+        });
+        this.game.sprites.push(sprite);
+
         setTimeout ( () => {
             this.game.delta = 1;
+        }, 250)
+        setTimeout( () => {
             this.hit = false;
-        }, 500)
+        }, 1000)
     }
 
     isCollideWith = function(other) {

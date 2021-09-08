@@ -4,13 +4,13 @@ export default class PlayerBullet extends Projectile{
     constructor(options){
         super(options)
         this.speed = 30;
-
+        this.hitboxRadius = 5;
         this.pathTowards(this.pos, this.dir)
         this.spawnBulletFront(30);
     }
 
     checkCollisions(){
-        this.checkHitEnemy();
+        if (this.checkHitEnemy()) this.removeSelf();
 
         // Boundary Collision
         let right = (this.pos[0] > this.game.DIM_X);
