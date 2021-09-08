@@ -71,7 +71,7 @@ export default class Game{
 
     drawBackground(){
         this.ctx.globalCompositeOperation = 'destination-over'
-        this.ctx.fillStyle = "white";
+        this.ctx.fillStyle = "grey";
         this.ctx.fillRect(0, 0, this.DIM_X, this.DIM_Y);
         this.ctx.globalCompositeOperation = 'source-over'
     }
@@ -80,16 +80,6 @@ export default class Game{
     gameStart(timeStamp){
         this.secondsPassed = (timeStamp - this.oldTimeStamp) / 1000;
         this.oldTimeStamp = timeStamp;
-        //Do necessary functions to set up objects for next frame(ie updating positions, check collisions,etc)
-        // setInterval(function(){
-        //     game.update();
-        // }, TICK);
-        
-        // //Draw current frame
-        // setInterval(function(){
-        //     game.draw();
-        // }, TICK);
-
         this.update(this.secondsPassed, this.delta);
         this.draw();
         window.requestAnimationFrame(this.gameStart.bind(this))
@@ -117,15 +107,15 @@ export default class Game{
         this.drawBackground();
         this.level.draw();
 
-        this.activeHitbox.forEach( obj =>{
-            obj.draw();
-        })
-        
         this.objects.forEach( obj =>{
             obj.draw();
         })
-
         
+        this.activeHitbox.forEach( obj =>{
+            obj.draw();
+        })
+
+       
 
         this.sprites.forEach( obj =>{
             obj.draw();

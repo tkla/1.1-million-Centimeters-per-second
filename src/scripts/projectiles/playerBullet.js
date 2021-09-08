@@ -4,7 +4,9 @@ export default class PlayerBullet extends Projectile{
     constructor(options){
         super(options)
         this.speed = 30;
+
         this.pathTowards(this.pos, this.dir)
+        this.spawnBulletFront(30);
     }
 
     checkCollisions(){

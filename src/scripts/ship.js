@@ -27,8 +27,8 @@ export default class Ship{
             ctx: this.ctx,
             swidth: 128,
             sheight: 128,
-            dwidth: 128,
-            dheight: 128,
+            dwidth: 64,
+            dheight: 64,
             image: this.selfSprite
         });
 
@@ -49,7 +49,9 @@ export default class Ship{
         //     this.ctx.fillStyle = "white";
         // }
         // this.ctx.fill();
-
+        
+        //Sprite drawing
+        this.sprite.update();
         this.sprite.draw(this.pos, this.game.mousePos);
         
         //Draw hurtbox when focus mode

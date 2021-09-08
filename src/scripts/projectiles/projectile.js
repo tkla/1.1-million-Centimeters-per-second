@@ -28,9 +28,44 @@ export default class Projectile extends Ship{
     }
 
     draw(){
+        this.sprite.update();
+        
         this.sprite.draw(this.pos, this.game.mousePos, false);
+        
+        //DEBUG draw hitbox
+        this.ctx.beginPath(); 
+        this.ctx.arc(this.pos[0], this.pos[1], this.hitboxRadius, 0, Math.PI *2, false);
+        this.ctx.strokeStyle = "blue";
+        this.ctx.stroke(); 
+        if (this.hit){
+            this.ctx.fillStyle = "pink"; 
+        } else {
+            this.ctx.fillStyle = "white";
+        }
+        this.ctx.fill();
+        
+        //Debug hurtbox
+        this.ctx.beginPath(); 
+        this.ctx.arc(this.pos[0], this.pos[1], this.hurtboxRadius, 0, Math.PI *2, false);
+        
+        if (this.hit){
+            this.ctx.fillStyle = "white"; 
+        } else {
+            this.ctx.fillStyle = 'red'; 
+        }
+        this.ctx.fill();
+        
     }
-    
+
+    spawnBulletFront(dist){
+        var dx = (this.dir[0] - this.pos[0]);
+        var dy = (this.dir[1] - this.pos[1]);
+        var mag = Math.sqrt(dx * dx + dy * dy);
+
+        this.pos[0] += (dx / mag) * dist;
+        this.pos[1] += (dy / mag) * dist;
+    }
+
     checkCollisions(){
         if (this.reflected){
             this.checkHitEnemy();

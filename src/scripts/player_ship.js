@@ -28,7 +28,7 @@ export default class PlayerShip extends Ship{
 
         //Throttles
         this.fire = Util.throttle(this.fire, 100 / this.game.delta, this);
-        this.parry = Util.throttle(this.parry, 1500 / this.game.delta, this);
+        this.parry = Util.throttle(this.parry, 101 / this.game.delta, this);
     }
 
     checkCollisions(){
@@ -69,8 +69,7 @@ export default class PlayerShip extends Ship{
             hitboxRadius: 10,
             dir: pos
         })
-
-        //console.log(this.game.objects);
+        
         this.game.activeHitbox.push(tmp);
     } 
 
@@ -79,9 +78,9 @@ export default class PlayerShip extends Ship{
             ctx: this.ctx, 
             game: this.game, 
             pos: this.pos,
-            color: "green",
-            hurtboxRadius: 17,
-            hitboxRadius: 35,
+            color: "red",
+            hurtboxRadius: 50,
+            hitboxRadius: 75,
             dir: pos
         })
         this.game.activeHitbox.push(tmp);

@@ -1,6 +1,7 @@
 import Ship from '../ship'
 import Projectile from '../projectiles/projectile'
 import {Util} from '../util'
+import EnemyProjectile from '../projectiles/enemyProjectile';
 
 export default class Enemy extends Ship{
     constructor(options){
@@ -9,7 +10,7 @@ export default class Enemy extends Ship{
     }
 
     fire(pos){
-        const tmp = new Projectile({
+        const tmp = new EnemyProjectile({
             ctx: this.ctx, 
             game: this.game, 
             pos: this.pos,
