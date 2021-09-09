@@ -18,11 +18,16 @@ crosshair.src = 'src/images/crosshair.png'
 const axe = new Image(); 
 axe.src = 'src/images/axe.png'
 
+const background = new Image(); 
+background.src = 'src/images/Background.png'
+
+
 export const Images = {
     bulletImage: bulletImage,
     defaultShip: defaultShip,
     playerShip: playerShip,
     meleeSwing: meleeSwing,
     crosshair: crosshair,
-    axe: axe
+    axe: axe,
+    background: background
 }

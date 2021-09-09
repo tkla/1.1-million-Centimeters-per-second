@@ -38,7 +38,7 @@ export default class Level {
     update(){
         if (this.game.delta > 0) this.time++;
         if (this.time === this.maxTime) this.player.health = 0; //Implement proper end game later
-
+        
         if (this.time === 1){
             this.spawnLeft(3, 80, false, true, 50);
             this.setEventFireRate(.5) 

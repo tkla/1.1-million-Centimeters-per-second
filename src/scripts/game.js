@@ -1,7 +1,5 @@
-import Enemy from "./enemy/enemy";
 import Level from "./level"
 import PlayerShip from "./player_ship";
-import Ship from "./ship"
 import {Images} from './animations/image_source'
 import Sprite from './animations/sprite'
 
@@ -62,6 +60,9 @@ export default class Game{
             width:this.DIM_Y,
             height:this.DIM_X
         }
+        this.background = Images.background;
+        this.imgHeight= 0;
+        this.scrollSpeed = 1;
         this.gameMenu();
         //window.requestAnimationFrame(this.gameStart.bind(this))
     }
@@ -88,7 +89,7 @@ export default class Game{
             let moon_elem = document.getElementById('moon_game');
             moon_elem.style.cursor = 'auto'
 
-            this.ctx.fillStyle = "black";  
+            this.ctx.fillStyle = "white";  
             this.ctx.font = '40px pressStart';
             this.ctx.fillText(`FINAL SCORE: ${this.player.score}` , this.DIM_X/2-300, this.DIM_Y/4 ); 
             this.ctx.font = '30px pressStart';
@@ -149,10 +150,10 @@ export default class Game{
     }
 
     drawBackground(){
-        this.ctx.globalCompositeOperation = 'destination-over'
-        this.ctx.fillStyle = "grey";
-        this.ctx.fillRect(0, 0, this.DIM_X, this.DIM_Y);
-        this.ctx.globalCompositeOperation = 'source-over'
+        this.ctx.drawImage(this.background, 0, this.imgHeight, this.DIM_X, this.DIM_Y);
+        this.ctx.drawImage(this.background, 0, this.imgHeight - this.DIM_Y, this.DIM_X, this.DIM_Y)
+        this.imgHeight += this.scrollSpeed;
+        if (this.imgHeight === this.DIM_Y) this.imgHeight = 0;
     }
     
     // Game, 60 ticks per second (roughly, not timing accurate). Put all necessary functions/logic per tick in here.
