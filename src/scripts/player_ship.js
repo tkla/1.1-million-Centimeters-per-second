@@ -113,7 +113,6 @@ export default class PlayerShip extends Ship{
             hitboxRadius: 10,
             dir: pos
         })
-        
         this.game.activeHitbox.push(tmp);
     } 
 

@@ -206,7 +206,7 @@ export default class Ship{
             lifeTime: 300
         });
         this.game.sprites.push(death)
-
+        Images.explode.play();
         let idx = this.game.objects.indexOf(this);
         this.game.objects.splice(idx, 1);
     }

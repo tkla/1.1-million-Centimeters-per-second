@@ -106,6 +106,18 @@ export default class Projectile extends Ship{
     }
 
     removeSelf(){
+        const hit = new Sprite({
+            ctx: this.ctx,
+            swidth: 64,
+            sheight: 64,
+            rotate: true,
+            pos: this.pos, 
+            game: this.game,
+            image: Images.projHit,
+            
+            lifeTime: 50
+        });
+        this.game.sprites.push(hit)
         let idx = this.game.activeHitbox.indexOf(this);
         this.game.activeHitbox.splice(idx, 1);
     }

@@ -108,7 +108,8 @@ export default class Game{
             moon_elem.style.cursor = 'none'
             this.GameStartButton = {}
             window.requestAnimationFrame(this.gameStart.bind(this))
-            Images.doctor.play()
+            Images.doctor.play();
+            Images.bgm.play();
         }else {
             let moon_elem = document.getElementById('moon_game');
             moon_elem.style.cursor = 'none'
