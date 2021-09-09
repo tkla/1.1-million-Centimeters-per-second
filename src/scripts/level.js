@@ -24,73 +24,53 @@ export default class Level {
 
     }
     /*  This is what they call HARD CODED. NO IQ, NO FORESIGHT.
+        Time is in seconds. Will be converted to MS for SetTimeout
         Events: spawnLeft(count, y, random, stagger, staggerNum)
                 spawnRight(count, y, random, stagger, staggerNum)
-                setEventPathVert(y, speed)
-                setEventPathHor(x, speed)
-                setEventPath(endPos, speed)
+                setEventPathHor(x, speed, time)
+                setEventPathVert(y, speed, time)
+                setEventPath(endPos, speed, time)
                 setEventFire(pos)
                 setFireRate(rate)   
     */
     update(){
-        console.log(this.game.mousePos);
+        //console.log(this.game.mousePos);
         if (this.game.delta > 0) this.time++;
         if (this.time == this.maxTime) endLevel();
 
-        if (this.time == 1) this.spawnLeft(3, 80, false, true, 50);
-        this.currEnemy.forEach( e=>{
-            e.setEvent(args...time)
-        })
-
-        if (this.time == 70){
-            this.setEventPathHor(225, 3)
-            this.setFireRate(.7);
-        }
-
-        if (this.time >= 150 && this.time <= 300){
-            this.setEventFire(this.game.player.pos)
-        }
-
-        if (this.time == 200){
-            this.setEventPathVert(1000, 3)
-            this.spawnRight(3, 80, false, true, 50)
-        }
-
-        if (this.time == 210){
-            this.setEventPathHor(625, 3)
-            this.setFireRate(.7);
-        }
-
-        if (this.time >= 300 && this.time <= 500){
-            this.setEventFire(this.game.player.pos)
-        }
-        
-        if (this.time === 400){
-            this.setEventPathVert(1000, 3)
+        if (this.time == 1){
+            this.spawnLeft(3, 80, false, true, 50);
+            this.setEventPathHor(225, 3, 1.1);
+            this.setEventPathVert(1000, 2, 4)
+            this.setEventPath(this.game.player.pos, 6, 6)
         }
 
     }
     //Go Straight up/down
-    setEventPathVert(y, speed){
-        let endPos = [0,0]
-        for (let i = 1; i < this.game.objects.length; i++){
-            endPos = [this.game.objects[i].pos[0], y-((i-1)*70)]
-            this.game.objects[i].pathTowards(this.game.objects[i].pos, endPos, speed)
+    //this.setEventPathVert(this.game.player.pos[1], 5, 5)
+    setEventPathVert(y, speed, time){
+        time *= 1000;
+        let endY = 0;
+        for (let i = 0; i < this.currEnemy.length; i++){
+            endY = y-((i-1)*70)
+            this.currEnemy[i].setEventPathVert(endY, speed, time)
         }
     }
     //Go Horizontal
-    setEventPathHor(x, speed){
-        let endPos = [0,0]
-        for (let i = 1; i < this.game.objects.length; i++){
-            
-            endPos = [x-((i-1)*70), this.game.objects[i].pos[1]]
-            this.game.objects[i].pathTowards(this.game.objects[i].pos, endPos, speed)
+    setEventPathHor(x, speed, time){
+        time *= 1000;
+        let endX = 0;
+        for (let i = 0; i < this.currEnemy.length; i++){
+            endX = x-((i-1)*70)
+                 
+            this.currEnemy[i].setEventPathHor(endX, speed, time)
         }
     }
     //Go Somewhere
-    setEventPath(endPos, speed){
-        for (let i = 1; i < this.game.objects.length; i++){
-            this.game.objects[i].pathTowards(this.game.objects[i].pos, endPos, speed)
+    setEventPath(endPos, speed, time){
+        time *= 1000;
+        for (let i = 0; i < this.currEnemy.length; i++){
+            this.currEnemy[i].setEventPath(endPos, speed, time);
         }
     }
 
@@ -137,18 +117,22 @@ export default class Level {
             this.game.objects.push(enemy)
         }
     }
-
-    setEventFire(pos){
-        for (let i = 1; i < this.game.objects.length; i++){
-            this.game.objects[i].fire(pos)
+    //If direction arg, 1 = down, 2 = right, 3 = left
+    setEventFire(pos, time, duration, player, direction){
+        time *= 1000;
+        duration *= 1000;
+        
+        for (let i = 0; i < this.currEnemy.length; i++){
+            this.currEnemy[i].setEventFire(pos, time, duration, player, fireDown, fireLeft, fireRight)
         }
     }
 
     //Set how often the current group of enemies will fire. Arg is in seconds, will be converted to ms.
-    setFireRate(rate){
-        rate = rate*1000;
-        for (let i = 1; i < this.game.objects.length; i++){
-            this.game.objects[i].throttleFireRate(rate)
+    setFireRate(rate, time=1){
+        time *= 1000;
+        rate *= 1000;
+        for (let i = 0; i < this.currEnemy.length; i++){
+            this.currEnemy[i].setEventFireRate(rate, time);
         }
     }
     //Call draw functions on objects that will spawn in level.

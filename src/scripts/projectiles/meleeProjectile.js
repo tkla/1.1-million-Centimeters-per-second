@@ -80,7 +80,7 @@ export default class MeleeProjectile extends Projectile{
                 objects[i].hit = true;
                 objects[i].damage = 100;
                 this.reflect(objects[i]);
-                objects[i].recoverKnockback(this.damage);
+                objects[i].recoverKnockback(1);
             }
         }
         //this.checkHitEnemy();
@@ -89,7 +89,7 @@ export default class MeleeProjectile extends Projectile{
     reflect(object){
         object.knockback = true;
         object.reflected = true;
-        object.pathTowards(object.pos, this.game.mousePos, 30/object.weight)
+        object.pushTowards(object.pos, this.game.mousePos, 30/object.weight)
     }
 
     
