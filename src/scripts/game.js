@@ -191,6 +191,7 @@ export default class Game{
 
     draw(){
         this.ctx.clearRect(0, 0, this.DIM_X, this.DIM_Y);
+
         this.drawBackground();
         this.level.draw();
 

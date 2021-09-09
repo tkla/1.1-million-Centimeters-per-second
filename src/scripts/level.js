@@ -15,7 +15,7 @@ export default class Level {
         //Current enemy set to give instructions to
         this.currEnemy = [];
         //this.game.objects.push( this.debug)
-        this.loadLevel();
+        //this.loadLevel();
     }
 
     loadLevel(){
@@ -36,7 +36,6 @@ export default class Level {
                 setEventFireRate(rate, time=1)               //Set how often the current group of enemies will fire.
     */
     update(){
-        //console.log(this.game.mousePos);
         if (this.game.delta > 0) this.time++;
         if (this.time === this.maxTime) this.player.health = 0; //Implement proper end game later
 
