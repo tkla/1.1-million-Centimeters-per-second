@@ -20,6 +20,9 @@ export default class Enemy extends Ship{
         setTimeout(() => {
             this.removeSelf();
         }, 20000)
+
+        //bad hack
+        this.homing = false;
     }
 
     fire(pos){
@@ -45,13 +48,13 @@ export default class Enemy extends Ship{
         //If pathing and not knocked back, stop moving at roughly destination position
         let arriveX = (this.pos[0] <= this.destPos[0]+20 && this.pos[0] >= this.destPos[0]-20)
         let arriveY = (this.pos[1] <= this.destPos[1]+20 && this.pos[1] >= this.destPos[1]-20)
-        if (!this.knockback && arriveX && arriveY && this.pathing){
+        if (!this.knockback && arriveX && arriveY && this.pathing && !this.homing){
             this.vel[0] = 0;
             this.vel[1] = 0;
         }
         
         if (this.firing) this.fire(this.targetFirePos)
-            
+
         this.checkCollisions();
         if (this.health <= 0 && !this.knockback){ 
             this.removeSelf();
@@ -84,7 +87,17 @@ export default class Enemy extends Ship{
         }
 
         this.currSprite.update();
-        this.currSprite.draw(this.pos, this.game.player.pos);
+        //Awful hack to make sure ship is facing where it's firing or going.
+        if (this.firing){
+            this.currSprite.rotate = true;
+            this.homing = false;
+            this.currSprite.draw(this.pos, this.targetFirePos);
+        }else if (this.homing) {
+            this.currSprite.draw(this.pos, this.destPos, false);
+        }else{
+            this.currSprite.rotate = true;
+            this.currSprite.draw(this.pos, this.destPos);
+        }        
     }
 
     //Event controllers
@@ -92,6 +105,7 @@ export default class Enemy extends Ship{
     //Go Straight up/down
     setEventPathVert(endY, speed, time){
         setTimeout( () => {
+            this.homing = false;
             this.pathTowards(this.pos, [this.pos[0], endY], speed)
         }, time)
     }
@@ -99,30 +113,34 @@ export default class Enemy extends Ship{
     //Go Horizontal
     setEventPathHor(endX, speed, time){
         setTimeout( () => {
+            this.homing = false;
             this.pathTowards(this.pos, [endX, this.pos[1]], speed)
         }, time)
         
     }
 
     //Go Somewhere
-    setEventPath(endPos, speed, time){
+    setEventPath(endPos, speed, time, homing){
         setTimeout( ()=> {
+            this.homing = false;
+            if (homing) this.homing = true;
             this.pathTowards(this.pos, endPos, speed)
         }, time)
     }
 
     //Fire at pos for X duration at X time
-    setEventFire(pos, time, duration, player, direction){
+    setEventFire(pos, time, duration, direction){
         let targetPos = pos;
         
         
         setTimeout( ()=> {
             this.firing = true;
-            if (player) targetPos = this.game.player.pos
-            else if (direction === 1) targetPos[this.pos[0], 2000]
-            else if (direction === 2) targetPos[1000, this.pos[1]]
-            else if (direction === 3) targetPos[-1000, this.pos[1]]
+            if (direction === 0) targetPos = this.game.player.pos
+            else if (direction === 1) targetPos = [this.pos[0], 2000]
+            else if (direction === 2) targetPos = [1000, this.pos[1]]
+            else if (direction === 3) targetPos = [-1000, this.pos[1]]
 
+            
             this.targetFirePos = targetPos;
         }, time)
 

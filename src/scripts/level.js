@@ -29,9 +29,11 @@ export default class Level {
                 spawnRight(count, y, random, stagger, staggerNum)
                 setEventPathHor(x, speed, time)
                 setEventPathVert(y, speed, time)
-                setEventPath(endPos, speed, time)
-                setEventFire(pos)
-                setFireRate(rate)   
+                setEventPath(endPos, speed, time, homing)
+        If direction arg, 0 = player.pos, 1 = down, 2 = right, 3 = left
+                setEventFire(pos, time, duration, direction)
+        Set how often the current group of enemies will fire.
+                setEventFireRate(rate, time=1) 
     */
     update(){
         //console.log(this.game.mousePos);
@@ -40,9 +42,14 @@ export default class Level {
 
         if (this.time == 1){
             this.spawnLeft(3, 80, false, true, 50);
-            this.setEventPathHor(225, 3, 1.1);
-            this.setEventPathVert(1000, 2, 4)
-            this.setEventPath(this.game.player.pos, 6, 6)
+            // this.setEventPathHor(225, 3, 1.1);
+            // this.setEventPathVert(1000, 2, 4)
+            // this.setEventFireRate(.1) 
+            this.setEventFire(this.game.player.pos, 3, 1, 0)
+            this.setEventPath(this.game.player.pos, 3, 2, true)
+            //this.setEventPath(this.game.player.pos, 3, 5, true)
+            //this.setEventPathVert(1000, 5, 5)
+        
         }
 
     }
@@ -66,11 +73,11 @@ export default class Level {
             this.currEnemy[i].setEventPathHor(endX, speed, time)
         }
     }
-    //Go Somewhere
-    setEventPath(endPos, speed, time){
+    //Go Somewhere. Homing is a hack, don't use.
+    setEventPath(endPos, speed, time, homing){
         time *= 1000;
         for (let i = 0; i < this.currEnemy.length; i++){
-            this.currEnemy[i].setEventPath(endPos, speed, time);
+            this.currEnemy[i].setEventPath(endPos, speed, time, homing);
         }
     }
 
@@ -117,18 +124,19 @@ export default class Level {
             this.game.objects.push(enemy)
         }
     }
-    //If direction arg, 1 = down, 2 = right, 3 = left
-    setEventFire(pos, time, duration, player, direction){
+    //setEventFire(this.game.player.pos, 2, 5, 3)
+    //If direction arg, 0= player.pos, 1 = down, 2 = right, 3 = left
+    setEventFire(pos, time, duration, direction){
         time *= 1000;
         duration *= 1000;
         
         for (let i = 0; i < this.currEnemy.length; i++){
-            this.currEnemy[i].setEventFire(pos, time, duration, player, fireDown, fireLeft, fireRight)
+            this.currEnemy[i].setEventFire(pos, time, duration, direction)
         }
     }
 
     //Set how often the current group of enemies will fire. Arg is in seconds, will be converted to ms.
-    setFireRate(rate, time=1){
+    setEventFireRate(rate, time=1){
         time *= 1000;
         rate *= 1000;
         for (let i = 0; i < this.currEnemy.length; i++){

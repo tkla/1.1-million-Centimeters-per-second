@@ -156,14 +156,13 @@ export default class Ship{
         this.destPos = pos2;
         this.origSpeed = speed;
         this.speed = speed;
+
         var dx = (pos2[0] - pos1[0]);
         var dy = (pos2[1] - pos1[1]);
         var mag = Math.sqrt(dx * dx + dy * dy);
 
-
         this.vel[0] = (dx / mag) * speed;
-        this.vel[1] = (dy / mag) * speed;
-        
+        this.vel[1] = (dy / mag) * speed;        
     }
 
     
