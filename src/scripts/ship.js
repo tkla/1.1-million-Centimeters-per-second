@@ -146,6 +146,7 @@ export default class Ship{
             this.hit = true;
             this.game.player.getHit();
             result = true;
+            this.removeSelf();
         } 
         return result;
     }

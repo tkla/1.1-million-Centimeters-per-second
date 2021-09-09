@@ -58,8 +58,8 @@ body {
 
 #moon_game {
   border-color: grey;
-  cursor: none;
-  cursor: hidden;
+  /* cursor: none;
+  cursor: hidden; */
 }
 
 .main-stats {

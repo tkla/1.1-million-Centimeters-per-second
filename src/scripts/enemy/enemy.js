@@ -15,11 +15,12 @@ export default class Enemy extends Ship{
         //Max fire rate.
         this.fire = Util.throttle(this.fire, (50 / this.game.delta), this);
         this.firing = false;
+        this.targetDir = 0;
         this.targetFirePos = this.game.player.pos;
-        //Max lifetime of an enemy ship is 20 secs. Used for easy cleanup.
+        //Max lifetime of an enemy ship is 25 secs. Used for easy cleanup.
         setTimeout(() => {
             this.removeSelf();
-        }, 20000)
+        }, 25000)
 
         //bad hack
         this.homing = false;
@@ -53,7 +54,13 @@ export default class Enemy extends Ship{
             this.vel[1] = 0;
         }
         
-        if (this.firing) this.fire(this.targetFirePos)
+        if (this.firing){
+            if (this.targetDir === 1) this.targetFirePos = [this.pos[0], 2000]
+            if (this.targetDir === 2) this.targetFirePos = [1000, this.pos[1]]
+            if (this.targetDir === 3) this.targetFirePos = [-1000, this.pos[1]]
+            this.fire(this.targetFirePos)
+            
+        }
 
         this.checkCollisions();
         if (this.health <= 0 && !this.knockback){ 
@@ -64,6 +71,7 @@ export default class Enemy extends Ship{
   
     repath(){
         this.knockback = false;
+        this.currSprite.rotate = true;
         this.pathTowards(this.pos, this.destPos, this.origSpeed)
     }
     
@@ -107,7 +115,7 @@ export default class Enemy extends Ship{
         setTimeout( () => {
             this.homing = false;
             this.pathTowards(this.pos, [this.pos[0], endY], speed)
-        }, time)
+        }, time*this.game.delta)
     }
 
     //Go Horizontal
@@ -115,7 +123,7 @@ export default class Enemy extends Ship{
         setTimeout( () => {
             this.homing = false;
             this.pathTowards(this.pos, [endX, this.pos[1]], speed)
-        }, time)
+        }, time*this.game.delta)
         
     }
 
@@ -125,7 +133,7 @@ export default class Enemy extends Ship{
             this.homing = false;
             if (homing) this.homing = true;
             this.pathTowards(this.pos, endPos, speed)
-        }, time)
+        }, time*this.game.delta)
     }
 
     //Fire at pos for X duration at X time
@@ -135,24 +143,23 @@ export default class Enemy extends Ship{
         
         setTimeout( ()=> {
             this.firing = true;
+            this.targetDir = 0;
             if (direction === 0) targetPos = this.game.player.pos
-            else if (direction === 1) targetPos = [this.pos[0], 2000]
-            else if (direction === 2) targetPos = [1000, this.pos[1]]
-            else if (direction === 3) targetPos = [-1000, this.pos[1]]
-
-            
+            else if (direction === 1) this.targetDir = 1; 
+            else if (direction === 2) this.targetDir = 2; 
+            else if (direction === 3) this.targetDir = 3; 
             this.targetFirePos = targetPos;
         }, time)
 
         setTimeout( ()=> {
             this.firing = false;
-        }, time + duration)
+        }, time*this.game.delta + duration*this.game.delta)
     }
 
     setEventFireRate(rate, time){
         setTimeout( ()=> {
             this.throttleFireRate(rate)
-        }, time)
+        }, time*this.game.delta)
         
     }
 }

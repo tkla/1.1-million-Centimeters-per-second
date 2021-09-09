@@ -10,7 +10,7 @@ export default class PlayerShip extends Ship{
         super(options);
         this.hurtboxRadius = 7;
         this.hitboxRadius = 35;
-        this.health = 3;
+        this.health = 10000;
         this.score = 0;
         this.player = true;
         //Movement
