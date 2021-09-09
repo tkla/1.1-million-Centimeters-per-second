@@ -104,7 +104,10 @@ export default class Ship{
         //this.hit = false;
         this.move(secondsPassed, delta);
         this.checkCollisions();
-        if (this.health <= 0 && !this.knockback) this.removeSelf();
+        if (this.health <= 0 && !this.knockback){ 
+            this.removeSelf();
+            this.game.player.score += 100;
+        }
     }
 
     checkCollisions(){
@@ -120,6 +123,7 @@ export default class Ship{
                 this.hit = true;
                 objects[i].hit = true;
                 objects[i].health -= this.damage;
+                this.game.player.score += 1;
                 result = true;
             }
         }
@@ -154,8 +158,9 @@ export default class Ship{
         let x_2 = other.pos[0];
         let y_2 = other.pos[1];
         let dist = Math.sqrt((x_1 - x_2) ** 2 + (y_1 - y_2) ** 2);
+        //If other is a player check hitBox radius to determine if grazed
         if (other.player){
-            if (dist < (this.hitboxRadius + other.hitboxRadius) ) other.score+= 2;
+            if (dist < (this.hitboxRadius + other.hitboxRadius) ) other.score+= 1;
         }
         return (dist < ((this.hitboxRadius + other.hurtboxRadius)));
     }

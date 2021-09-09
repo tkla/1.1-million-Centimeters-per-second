@@ -44,13 +44,11 @@ export default class PlayerShip extends Ship{
     checkCollisions(){
         let objects = this.game.objects;
 
-        // if (this.hit){
-        //     this.getHit()
-        // }
         let life = document.getElementById('main-stats-life');
         let score = document.getElementById('main-stats-score'); 
         life.innerHTML  = `Life: ` + `${this.health}`.padStart(5, '0');
         score.innerHTML  = `Score: ` + `${this.score}`.padStart(5, 0);
+        
         if (this.pos[0] > this.game.DIM_X) this.pos[0] = this.game.DIM_X;
         if (this.pos[0] < 0) this.pos[0] = 0;
         if (this.pos[1] > this.game.DIM_Y) this.pos[1] = this.game.DIM_Y;

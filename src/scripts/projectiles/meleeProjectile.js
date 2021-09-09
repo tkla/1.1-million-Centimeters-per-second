@@ -66,6 +66,7 @@ export default class MeleeProjectile extends Projectile{
                 this.hit = true;
                 objects[i].hit = true;
                 objects[i].damage = 100;
+                this.game.player.score += 40;
                 //objects[i].hitRadius = 40;
                 this.reflect(objects[i]);
             }
@@ -78,10 +79,8 @@ export default class MeleeProjectile extends Projectile{
                 this.hit = true;
                 objects[i].hit = true;
                 objects[i].damage = 100;
-                //objects[i].health -= this.damage;
                 this.reflect(objects[i]);
                 objects[i].recoverKnockback(this.damage);
-                
             }
         }
         //this.checkHitEnemy();

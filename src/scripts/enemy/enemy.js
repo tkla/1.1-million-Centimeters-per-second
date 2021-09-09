@@ -32,6 +32,10 @@ export default class Enemy extends Ship{
         this.game.activeHitbox.push(tmp);
     }
 
+    throttleFireRate(rate){
+        this.fire = Util.throttle(this.fire, (500 / this.game.delta), this);
+    }
+
     pathTowards(pos1, pos2, speed = this.speed){
         this.speed = speed;
         var dx = (pos2[0] - pos1[0]);
