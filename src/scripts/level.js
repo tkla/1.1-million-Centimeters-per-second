@@ -23,14 +23,15 @@ export default class Level {
     }
     //This is what they call HARD CODED. NO IQ, NO FORESIGHT.
     update(){
-       
+        console.log(this.game.mousePos);
         if (this.game.delta > 0) this.time++;
         //console.log(this.time)
         if (this.time == this.maxTime) endLevel();
 
         if (this.time == 70){
             let newPos = [2000, this.DIM_Y/3]
-            this.setEventPathHor(1000, 3)
+            this.setEventPathHor(500, 3)
+            this.setFireRate(.7);
         }
 
         if (this.time == 300){
@@ -54,7 +55,7 @@ export default class Level {
     setEventPathVert(y, speed){
         let endPos = [0,0]
         for (let i = 1; i < this.game.objects.length; i++){
-            endPos = [this.game.objects[i].pos[0], y-(i*50)]
+            endPos = [this.game.objects[i].pos[0], y-((i-1)*70)]
             this.game.objects[i].pathTowards(this.game.objects[i].pos, endPos, speed)
         }
     }
@@ -62,7 +63,7 @@ export default class Level {
     setEventPathHor(x, speed){
         let endPos = [0,0]
         for (let i = 1; i < this.game.objects.length; i++){
-            endPos = [x-(i*50), this.game.objects[i].pos[1]]
+            endPos = [x-((i-1)*70), this.game.objects[i].pos[1]]
             this.game.objects[i].pathTowards(this.game.objects[i].pos, endPos, speed)
         }
     }
@@ -91,10 +92,19 @@ export default class Level {
         }
     }
     
-
+    
     setEventFire(pos){
         for (let i = 1; i < this.game.objects.length; i++){
             this.game.objects[i].fire(pos)
+        }
+    }
+
+    //Set how often the current group of enemies will fire. Arg is in seconds, will be converted to ms.
+    setFireRate(rate){
+        rate = rate*1000;
+        console.log(rate)
+        for (let i = 1; i < this.game.objects.length; i++){
+            this.game.objects[i].throttleFireRate(rate)
         }
     }
     //Call draw functions on objects that will spawn in level.

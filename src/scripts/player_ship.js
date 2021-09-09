@@ -57,7 +57,7 @@ export default class PlayerShip extends Ship{
 
     getHit(){
         this.health--;
-        this.game.delta *= 0.5
+        this.game.delta = 0.5
         this.hit = true;
         
         const sprite = new Sprite({
