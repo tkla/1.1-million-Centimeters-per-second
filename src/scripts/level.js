@@ -8,7 +8,7 @@ export default class Level {
         this.player = this.game.player;
         this.playerPos = this.game.player.pos;
         this.time = 0;
-        this.maxTime = 4500;
+        this.maxTime = 4000;
         this.DIM_X = this.ctx.canvas.width;
         this.DIM_Y = this.ctx.canvas.height;
 
@@ -82,14 +82,14 @@ export default class Level {
             this.setEventFire(this.playerPos, 4, 10, 1)
         }
 
-        if (this.time === 1500){
-            this.spawnTop(9, 50, false, false);
-            this.setEventPathVert(2000, 2, 1);
-            this.setEventFireRate(.75);
-            this.setEventFire(this.playerPos, 4, 10, 2)
-        }
+        // if (this.time === 1200){
+        //     this.spawnTop(9, 50, false, false);
+        //     this.setEventPathVert(2000, 2, 1);
+        //     this.setEventFireRate(.75);
+        //     this.setEventFire(this.playerPos, 4, 10, 2)
+        // }
 
-        if (this.time === 1950){
+        if (this.time === 1300){
             this.spawnTop(16, 5, false, true, 0, 30);
             this.setEventPathVert(50, 5, 1, true);
             this.setEventFireRate(.5);
@@ -101,7 +101,64 @@ export default class Level {
             
         }
 
-        if (this.time === 2200){
+        if (this.time === 1400){
+            this.spawnTop(16, this.DIM_X/2+50, false, true, 0, 30);
+            this.setEventPathVert(50, 5, 1, true);
+            this.setEventFireRate(.5);
+            this.setEventFire(this.playerPos, 2, .5, 1)
+            this.setEventPathVert(2000, 5, 2.2, true);
+            this.setEventPath(this.playerPos, 8, 3, true)
+        }
+
+        if (this.time === 1500){
+            this.spawnTop(16, 5, false, true, 0, 30);
+            this.setEventPathVert(50, 5, 1, true);
+            this.setEventFireRate(.5);
+            this.setEventFire(this.playerPos, 2, .5, 1)
+            this.setEventPathVert(2000, 5, 2.2, true);
+            this.setEventFire(this.playerPos, 2, .5, 1)
+            this.setEventPath(this.playerPos, 8, 3, true)
+        }
+
+        if (this.time === 1600){
+            this.spawnTop(16, this.DIM_X/2+50, false, true, 0, 30);
+            this.setEventPathVert(50, 5, 1, true);
+            this.setEventFireRate(.5);
+            this.setEventFire(this.playerPos, 2, .5, 1)
+            this.setEventPathVert(2000, 5, 2.2, true);
+            this.setEventPath(this.playerPos, 8, 3, true)
+        }
+
+        if (this.time === 1700){
+            this.spawnTop(16, 5, false, true, 0, 30);
+            this.setEventPathVert(50, 5, 1, true);
+            this.setEventFireRate(.5);
+            this.setEventFire(this.playerPos, 2, .5, 1)
+            this.setEventPathVert(2000, 5, 2.2, true);
+            this.setEventFire(this.playerPos, 2, .5, 1)
+            this.setEventPath(this.playerPos, 8, 3, true)
+        }
+
+        if (this.time === 1800){
+            this.spawnTop(16, this.DIM_X/2+50, false, true, 0, 30);
+            this.setEventPathVert(50, 5, 1, true);
+            this.setEventFireRate(.5);
+            this.setEventFire(this.playerPos, 2, .5, 1)
+            this.setEventPathVert(2000, 5, 2.2, true);
+            this.setEventPath(this.playerPos, 8, 3, true)
+        }
+
+        if (this.time === 1900){
+            this.spawnTop(16, 5, false, true, 0, 30);
+            this.setEventPathVert(50, 5, 1, true);
+            this.setEventFireRate(.5);
+            this.setEventFire(this.playerPos, 2, .5, 1)
+            this.setEventPathVert(2000, 5, 2.2, true);
+            this.setEventFire(this.playerPos, 2, .5, 1)
+            this.setEventPath(this.playerPos, 8, 3, true)
+        }
+
+        if (this.time === 2000){
             this.spawnTop(16, this.DIM_X/2+50, false, true, 0, 30);
             this.setEventPathVert(50, 5, 1, true);
             this.setEventFireRate(.5);
@@ -116,7 +173,7 @@ export default class Level {
             this.setEventFireRate(.5);
             this.setEventFire(this.playerPos, 2, .5, 1)
             this.setEventPathVert(2000, 5, 2.2, true);
-            this.setEventFire(this.playerPos, 2, .5, 1)
+            this.setEventFire(this.playerPos, 2, 3, 1)
             this.setEventPath(this.playerPos, 8, 3, true)
         }
 
@@ -127,86 +184,29 @@ export default class Level {
             this.setEventFire(this.playerPos, 2, .5, 1)
             this.setEventPathVert(2000, 5, 2.2, true);
             this.setEventPath(this.playerPos, 8, 3, true)
-        }
-
-        if (this.time === 2250){
-            this.spawnTop(16, 5, false, true, 0, 30);
-            this.setEventPathVert(50, 5, 1, true);
-            this.setEventFireRate(.5);
-            this.setEventFire(this.playerPos, 2, .5, 1)
-            this.setEventPathVert(2000, 5, 2.2, true);
-            this.setEventFire(this.playerPos, 2, .5, 1)
-            this.setEventPath(this.playerPos, 8, 3, true)
-        }
-
-        if (this.time === 2300){
-            this.spawnTop(16, this.DIM_X/2+50, false, true, 0, 30);
-            this.setEventPathVert(50, 5, 1, true);
-            this.setEventFireRate(.5);
-            this.setEventFire(this.playerPos, 2, .5, 1)
-            this.setEventPathVert(2000, 5, 2.2, true);
-            this.setEventPath(this.playerPos, 8, 3, true)
-        }
-
-        if (this.time === 2400){
-            this.spawnTop(16, 5, false, true, 0, 30);
-            this.setEventPathVert(50, 5, 1, true);
-            this.setEventFireRate(.5);
-            this.setEventFire(this.playerPos, 2, .5, 1)
-            this.setEventPathVert(2000, 5, 2.2, true);
-            this.setEventFire(this.playerPos, 2, .5, 1)
-            this.setEventPath(this.playerPos, 8, 3, true)
-        }
-
-        if (this.time === 2500){
-            this.spawnTop(16, this.DIM_X/2+50, false, true, 0, 30);
-            this.setEventPathVert(50, 5, 1, true);
-            this.setEventFireRate(.5);
-            this.setEventFire(this.playerPos, 2, .5, 1)
-            this.setEventPathVert(2000, 5, 2.2, true);
-            this.setEventPath(this.playerPos, 8, 3, true)
-        }
-
-        if (this.time === 2600){
-            this.spawnTop(16, 5, false, true, 0, 30);
-            this.setEventPathVert(50, 5, 1, true);
-            this.setEventFireRate(.5);
-            this.setEventFire(this.playerPos, 2, .5, 1)
-            this.setEventPathVert(2000, 5, 2.2, true);
-            this.setEventFire(this.playerPos, 2, 3, 1)
-            this.setEventPath(this.playerPos, 8, 3, true)
-        }
-
-        if (this.time === 2800){
-            this.spawnTop(16, this.DIM_X/2+50, false, true, 0, 30);
-            this.setEventPathVert(50, 5, 1, true);
-            this.setEventFireRate(.5);
-            this.setEventFire(this.playerPos, 2, .5, 1)
-            this.setEventPathVert(2000, 5, 2.2, true);
-            this.setEventPath(this.playerPos, 8, 3, true)
             this.setEventFire(this.playerPos, 8, 2)
         }
 
-        if (this.time === 3000){
+        if (this.time === 2500){
             this.spawnTop(16, 5, false, true, 0, 30);
             this.setEventPathVert(50, 5, 1, true);
             this.setEventFireRate(.5);
-            this.setEventFire(this.playerPos, 2, .5, 1)
+            //this.setEventFire(this.playerPos, 2, .5, 1)
             this.setEventPathVert(2000, 2, 2.2, true);
-            this.setEventFire(this.playerPos, 3, 20)
+            this.setEventFire(this.playerPos, 1, 20)
         }
 
-        if (this.time === 3200){
+        if (this.time === 2900){
             this.spawnTop(16, this.DIM_X/2+50, false, true, 0, 30);
             this.setEventPathVert(50, 5, 1, true);
             this.setEventFireRate(.5);
-            this.setEventFire(this.playerPos, 2, .5, 1)
+            //this.setEventFire(this.playerPos, 2, .5, 1)
             this.setEventPathVert(2000, 1, 2.2, true);
             this.setEventPath(this.playerPos, 3, 3, true)
-            this.setEventFire(this.playerPos, 3, 25)
+            this.setEventFire(this.playerPos, 1, 25)
         }
 
-        if (this.time === 3500){
+        if (this.time === 3200){
             this.spawnLeft(15, -400, false, true, 100, true)
             this.setEventFireRate(1)
             this.setEventPathHor(40, 5, 1, true)
@@ -214,7 +214,7 @@ export default class Level {
             this.setEventFire(this.playerPos, 2, 20, 2)
         }
 
-        if (this.time === 3500){
+        if (this.time === 3200){
             this.spawnRight(15, -450, false, true, 100, true)
             this.setEventFireRate(1)
             this.setEventPathHor(this.DIM_X-40, 5, 1, true)

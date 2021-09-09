@@ -47,29 +47,12 @@ export default class Game{
         this.player = ship;
         this.objects.push(ship);
 
-        //Debug---------------------------------------
-        // const debug1 = new Enemy({
-        //     ctx: this.ctx, 
-        //     game: this, 
-        //     pos: [this.DIM_X/2, this.DIM_Y/2]
-        // })
-        // const debug2 = new Enemy({
-        //     ctx: this.ctx, 
-        //     game: this, 
-        //     pos: [this.DIM_X/2, this.DIM_Y/3]
-        // })
-        // this.debug1 = debug1;
-        // this.debug2 = debug2;
-        // this.objects.push(debug1);
-        // this.objects.push(debug2);
-        //--------------------------------------------
-
         //Level 
-        const level = new Level({
+        this.level = new Level({
             ctx: this.ctx,
             game: this 
         });
-        this.level = level;
+
         //Game loop start
         this.secondsPassed = 0;
         this.oldTimeStamp= 0;
@@ -127,7 +110,7 @@ export default class Game{
             this.GameStartButton = {};
             this.activeHitbox = [];
             this.objects = [];
-            this.sprites= [];
+            this.sprites = [];
             this.level = new Level({
                 ctx: this.ctx,
                 game: this 
@@ -142,6 +125,7 @@ export default class Game{
             this.sprites.push(this.cursor)
             this.objects.push(this.player);
             
+            this.gameStart();
         }
         
     }

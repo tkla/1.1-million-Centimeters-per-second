@@ -78,7 +78,7 @@ export default class MeleeProjectile extends Projectile{
                 if (objects[i].knockback) continue;
                 this.hit = true;
                 objects[i].hit = true;
-                objects[i].damage = 100;
+                objects[i].damage = 30;
                 this.reflect(objects[i]);
                 objects[i].recoverKnockback(this.damage);
             }

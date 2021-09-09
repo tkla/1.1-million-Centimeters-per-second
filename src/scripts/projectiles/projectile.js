@@ -77,7 +77,7 @@ export default class Projectile extends Ship{
         
         // Boundary Collision
         let buffer = 0;
-        (this.knockback)? buffer = 0 : buffer = 100;
+        (this.knockback)? buffer = 0 : buffer = 10;
        
         let right = (this.pos[0] > this.game.DIM_X + buffer);
         let left = (this.pos[0] < -buffer);

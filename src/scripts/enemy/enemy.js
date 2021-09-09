@@ -20,7 +20,7 @@ export default class Enemy extends Ship{
         //Max lifetime of an enemy ship is 25 secs. Used for easy cleanup.
         setTimeout(() => {
             this.removeSelf();
-        }, 25000)
+        }, 50000)
 
         //bad hack
         this.homing = false;
@@ -115,7 +115,7 @@ export default class Enemy extends Ship{
         setTimeout( () => {
             this.homing = false;
             this.pathTowards(this.pos, [this.pos[0], endY], speed)
-        }, time*this.game.delta)
+        }, time)
     }
 
     //Go Horizontal
@@ -123,7 +123,7 @@ export default class Enemy extends Ship{
         setTimeout( () => {
             this.homing = false;
             this.pathTowards(this.pos, [endX, this.pos[1]], speed)
-        }, time*this.game.delta)
+        }, time)
         
     }
 
@@ -133,7 +133,7 @@ export default class Enemy extends Ship{
             this.homing = false;
             if (homing) this.homing = true;
             this.pathTowards(this.pos, endPos, speed)
-        }, time*this.game.delta)
+        }, time)
     }
 
     //Fire at pos for X duration at X time
@@ -153,13 +153,13 @@ export default class Enemy extends Ship{
 
         setTimeout( ()=> {
             this.firing = false;
-        }, time*this.game.delta + duration*this.game.delta)
+        }, time + duration)
     }
 
     setEventFireRate(rate, time){
         setTimeout( ()=> {
             this.throttleFireRate(rate)
-        }, time*this.game.delta)
+        }, time)
         
     }
 }
