@@ -90,7 +90,8 @@ export default class Projectile extends Ship{
             }
         }else{
             if (up) {
-                this.removeSelf()
+                //this.removeSelf()
+                this.vel[1] *= -1;
             }
             if (right || left){
                 this.knockbackMax--;
