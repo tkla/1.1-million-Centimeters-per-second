@@ -125,7 +125,6 @@ export default class Game{
             this.sprites.push(this.cursor)
             this.objects.push(this.player);
             
-            this.gameStart();
         }
         
     }
