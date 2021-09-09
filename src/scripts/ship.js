@@ -191,6 +191,22 @@ export default class Ship{
     }
     
     removeSelf(){
+        //Cursor 
+        const death = new Sprite({
+            ctx: this.ctx,
+            swidth: 1792,
+            sheight: 256,
+            rotate: true,
+            pos: [this.pos[0], this.pos[1]+100], //Shitty workaround cause I don't know how to pos sprites properlu
+            game: this.game,
+            image: Images.explosion,
+            frameMax: 7,
+            ticksPerFrame: 3,
+            
+            lifeTime: 300
+        });
+        this.game.sprites.push(death)
+
         let idx = this.game.objects.indexOf(this);
         this.game.objects.splice(idx, 1);
     }

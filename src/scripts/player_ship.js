@@ -60,20 +60,18 @@ export default class PlayerShip extends Ship{
         this.game.delta = 0.5
         this.hit = true;
         
-        const sprite = new Sprite({
+        const hit = new Sprite({
             ctx: this.ctx,
-            swidth: 100,
-            sheight: 100,
-            dy: this.pos[1],
-            dx: this.pos[0],
-            dwidth: 100,
-            dheight: 100,
-            pos: this.pos,
+            swidth: 128,
+            sheight: 128,
+            rotate: true,
+            pos: this.pos, 
             game: this.game,
-            lifeTime: 50,
-            image: Images.bulletImage
+            image: Images.hit,
+            
+            lifeTime: 200
         });
-        this.game.sprites.push(sprite);
+        this.game.sprites.push(hit)
 
         setTimeout ( () => {
             this.game.delta = 1;

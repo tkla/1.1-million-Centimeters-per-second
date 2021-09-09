@@ -70,7 +70,7 @@ export default class Projectile extends Ship{
 
     checkCollisions(){
         if (this.reflected){
-           this.checkHitEnemy();
+           if (this.checkHitEnemy() ) this.removeSelf();
         } else {
             if (this.checkHitPlayer()) this.removeSelf();
         }

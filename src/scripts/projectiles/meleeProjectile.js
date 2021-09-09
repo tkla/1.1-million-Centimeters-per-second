@@ -31,32 +31,7 @@ export default class MeleeProjectile extends Projectile{
 
     draw(){
         this.sprite.update();
-        //let offset = [this.pos[0]*.5, this.pos[1]*0.5];
         this.sprite.drawMelee(this.pos, this.game.mousePos, true);
-        
-        //DEBUG draw hitbox
-        // this.ctx.beginPath(); 
-        // this.ctx.arc(this.pos[0], this.pos[1], this.hitboxRadius, 0, Math.PI *2, false);
-        // this.ctx.strokeStyle = "blue";
-        // this.ctx.stroke(); 
-        // if (this.hit){
-        //     this.ctx.fillStyle = "pink"; 
-        // } else {
-        //     this.ctx.fillStyle = "white";
-        // }
-        // this.ctx.fill();
-        
-        // //Debug hurtbox
-        // this.ctx.beginPath(); 
-        // this.ctx.arc(this.pos[0], this.pos[1], this.hurtboxRadius, 0, Math.PI *2, false);
-        
-        // if (this.hit){
-        //     this.ctx.fillStyle = "white"; 
-        // } else {
-        //     this.ctx.fillStyle = 'red'; 
-        // }
-        // this.ctx.fill();
-        
     }
 
     checkCollisions(){
@@ -65,7 +40,7 @@ export default class MeleeProjectile extends Projectile{
             if (this.isCollideWith(objects[i]) && objects[i] != this && !(objects[i] instanceof(PlayerBullet)) ){
                 this.hit = true;
                 objects[i].hit = true;
-                objects[i].damage = 100;
+                objects[i].damage = 40;
                 this.game.player.score += 40;
                 //objects[i].hitRadius = 40;
                 this.reflect(objects[i]);
@@ -78,12 +53,11 @@ export default class MeleeProjectile extends Projectile{
                 if (objects[i].knockback) continue;
                 this.hit = true;
                 objects[i].hit = true;
-                objects[i].damage = 30;
+                objects[i].damage = 50;
                 this.reflect(objects[i]);
                 objects[i].recoverKnockback(this.damage);
             }
         }
-        //this.checkHitEnemy();
     }
 
     reflect(object){

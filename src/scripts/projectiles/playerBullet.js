@@ -5,7 +5,7 @@ export default class PlayerBullet extends Projectile{
         super(options)
         this.speed = 30;
         this.hitboxRadius = 5;
-        this.damage = 10;
+        this.damage = 20;
         this.pathTowards(this.pos, this.dir)
         this.spawnBulletFront(30);
     }

@@ -21,6 +21,11 @@ axe.src = 'src/images/axe.png'
 const background = new Image(); 
 background.src = 'src/images/Background.png'
 
+const explosion = new Image(); 
+explosion.src = 'src/images/explosion.png'
+
+const hit = new Image(); 
+hit.src = 'src/images/hit.png'
 
 export const Images = {
     bulletImage: bulletImage,
@@ -29,5 +34,7 @@ export const Images = {
     meleeSwing: meleeSwing,
     crosshair: crosshair,
     axe: axe,
-    background: background
+    background: background,
+    explosion: explosion,
+    hit: hit
 }
