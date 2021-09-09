@@ -88,6 +88,7 @@ export default class Enemy extends Ship{
             
         }, 1000*this.game.delta)
     }
+
     draw(){
         //Sprite drawing
         //console.log(this.currSprite.image)
@@ -99,5 +100,31 @@ export default class Enemy extends Ship{
 
         this.currSprite.update();
         this.currSprite.draw(this.pos, this.game.player.pos);
+    }
+
+    //Event controllers
+
+    //Go Straight up/down
+    setEventPathVert(y, speed){
+        let endPos = [0,0]
+        for (let i = 1; i < this.game.objects.length; i++){
+            endPos = [this.game.objects[i].pos[0], y-((i-1)*70)]
+            this.game.objects[i].pathTowards(this.game.objects[i].pos, endPos, speed)
+        }
+    }
+    //Go Horizontal
+    setEventPathHor(x, speed){
+        let endPos = [0,0]
+        for (let i = 1; i < this.game.objects.length; i++){
+            
+            endPos = [x-((i-1)*70), this.game.objects[i].pos[1]]
+            this.game.objects[i].pathTowards(this.game.objects[i].pos, endPos, speed)
+        }
+    }
+    //Go Somewhere
+    setEventPath(endPos, speed, time){
+        setTimeout( ()=> {
+            this.pathTowards(this.pos, endPos, speed)
+        })
     }
 }

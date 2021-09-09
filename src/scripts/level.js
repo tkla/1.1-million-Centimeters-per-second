@@ -10,6 +10,8 @@ export default class Level {
         this.DIM_X = this.ctx.canvas.width;
         this.DIM_Y = this.ctx.canvas.height;
 
+        //Current enemy set to give instructions to
+        this.currEnemy = [];
         //this.game.objects.push( this.debug)
         this.loadLevel();
     }
@@ -36,22 +38,36 @@ export default class Level {
         if (this.time == this.maxTime) endLevel();
 
         if (this.time == 1) this.spawnLeft(3, 80, false, true, 50);
+        this.currEnemy.forEach( e=>{
+            e.setEvent(args...time)
+        })
 
         if (this.time == 70){
             this.setEventPathHor(225, 3)
             this.setFireRate(.7);
         }
 
-        if (this.time >= 150 && this.time <= 3000){
+        if (this.time >= 150 && this.time <= 300){
+            this.setEventFire(this.game.player.pos)
+        }
+
+        if (this.time == 200){
+            this.setEventPathVert(1000, 3)
+            this.spawnRight(3, 80, false, true, 50)
+        }
+
+        if (this.time == 210){
+            this.setEventPathHor(625, 3)
+            this.setFireRate(.7);
+        }
+
+        if (this.time >= 300 && this.time <= 500){
             this.setEventFire(this.game.player.pos)
         }
         
-        if (this.time == 180){
-            //this.setEventPathVert(1000, 3)
+        if (this.time === 400){
+            this.setEventPathVert(1000, 3)
         }
-
-        
-
 
     }
     //Go Straight up/down
@@ -79,6 +95,7 @@ export default class Level {
     }
 
     spawnLeft(count, y, random, stagger, staggerNum){
+        this.currEnemy = []
         let yLow = y - 200;
         let yHigh = y + 200
         for (let i = 0; i < count; i++){
@@ -94,11 +111,13 @@ export default class Level {
                 game: this.game, 
                 pos: [-100-(i*70), yStaggered]
             })
+            this.currEnemy.push(enemy)
             this.game.objects.push(enemy)
         }
     }
     
     spawnRight(count, y, random, stagger, staggerNum){
+        this.currEnemy = [];
         let yLow = y - 200;
         let yHigh = y + 200
         for (let i = 0; i < count; i++){
@@ -114,6 +133,7 @@ export default class Level {
                 game: this.game, 
                 pos: [this.DIM_X + 100 + (i*70), yStaggered]
             })
+            this.currEnemy.push(enemy)
             this.game.objects.push(enemy)
         }
     }
