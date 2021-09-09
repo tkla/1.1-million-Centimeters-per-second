@@ -36,7 +36,6 @@ export default class Enemy extends Ship{
     }
 
     throttleFireRate(rate){
-        console.log(rate)
         this.fire = Util.throttle(this.fire, (rate / this.game.delta), this);
     }
 
@@ -44,7 +43,7 @@ export default class Enemy extends Ship{
         this.move(secondsPassed, delta);
         //If pathing and not knocked back, stop moving at roughly destination position
         let arriveX = (this.pos[0] <= this.destPos[0]+20 && this.pos[0] >= this.destPos[0]-20)
-        let arriveY = (this.pos[1] <= this.destPos[1]+20 && this.pos[0] >= this.destPos[1]-20)
+        let arriveY = (this.pos[1] <= this.destPos[1]+20 && this.pos[1] >= this.destPos[1]-20)
         if (!this.knockback && arriveX && arriveY && this.pathing){
             this.vel[0] = 0;
             this.vel[1] = 0;
