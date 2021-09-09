@@ -40,7 +40,7 @@ export default class MeleeProjectile extends Projectile{
             if (this.isCollideWith(objects[i]) && objects[i] != this && !(objects[i] instanceof(PlayerBullet)) ){
                 this.hit = true;
                 objects[i].hit = true;
-                objects[i].damage = 40;
+                objects[i].damage = 50;
                 this.game.player.score += 40;
                 //objects[i].hitRadius = 40;
                 this.reflect(objects[i]);

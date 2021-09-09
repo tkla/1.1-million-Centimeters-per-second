@@ -90,8 +90,11 @@ export default class Game{
             moon_elem.style.cursor = 'auto'
 
             this.ctx.fillStyle = "white";  
+            this.ctx.strokeStyle = 'black';
+
             this.ctx.font = '40px pressStart';
             this.ctx.fillText(`FINAL SCORE: ${this.player.score}` , this.DIM_X/2-300, this.DIM_Y/4 ); 
+
             this.ctx.font = '30px pressStart';
             this.ctx.fillText("GRADE: C-", this.DIM_X/2-120, this.DIM_Y/2); 
             this.ctx.fillText("Click to Restart?", this.DIM_X/2-240, this.DIM_Y/1.5); 
@@ -105,6 +108,7 @@ export default class Game{
             moon_elem.style.cursor = 'none'
             this.GameStartButton = {}
             window.requestAnimationFrame(this.gameStart.bind(this))
+            Images.doctor.play()
         }else {
             let moon_elem = document.getElementById('moon_game');
             moon_elem.style.cursor = 'none'
@@ -154,6 +158,10 @@ export default class Game{
         this.ctx.drawImage(this.background, 0, this.imgHeight - this.DIM_Y, this.DIM_X, this.DIM_Y)
         this.imgHeight += this.scrollSpeed;
         if (this.imgHeight === this.DIM_Y) this.imgHeight = 0;
+        this.ctx.fillStyle = "white";  
+        this.ctx.font = '20px pressStart';
+        let timer = (90 - this.level.time/60).toString().substring(0,5)
+        this.ctx.fillText( `${timer}` , this.DIM_X/2-70, this.DIM_Y/10 );
     }
     
     // Game, 60 ticks per second (roughly, not timing accurate). Put all necessary functions/logic per tick in here.

@@ -27,6 +27,8 @@ explosion.src = 'src/images/explosion.png'
 const hit = new Image(); 
 hit.src = 'src/images/hit.png'
 
+const doctor = new Audio("src/images/doctor.mp3"); 
+doctor.volume = 0.2;
 export const Images = {
     bulletImage: bulletImage,
     defaultShip: defaultShip,
@@ -36,5 +38,6 @@ export const Images = {
     axe: axe,
     background: background,
     explosion: explosion,
-    hit: hit
+    hit: hit,
+    doctor: doctor
 }
