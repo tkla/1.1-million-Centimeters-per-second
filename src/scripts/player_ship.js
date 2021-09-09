@@ -10,7 +10,7 @@ export default class PlayerShip extends Ship{
         super(options);
         this.hurtboxRadius = 7;
         this.hitboxRadius = 35;
-        this.health = 3;
+        this.health = 5;
         this.score = 0;
         this.player = true;
         //Movement
@@ -38,7 +38,7 @@ export default class PlayerShip extends Ship{
     update(secondsPassed, delta){
         this.move(secondsPassed, delta);
         this.checkCollisions();
-        if (this.health <= 0) this.removeSelf();
+        //if (this.health <= 0) this.removeSelf();
     }
 
     checkCollisions(){

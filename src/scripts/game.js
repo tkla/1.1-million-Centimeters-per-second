@@ -27,7 +27,7 @@ export default class Game{
         this.sprites = [];
        
         //Cursor 
-        const cursor = new Sprite({
+        this.cursor = new Sprite({
             ctx: this.ctx,
             swidth: 32,
             sheight: 32,
@@ -36,7 +36,7 @@ export default class Game{
             game: this,
             image: Images.crosshair
         });
-        this.sprites.push(cursor)
+        this.sprites.push(this.cursor)
 
         //Player ship 
         const ship = new PlayerShip({
@@ -47,34 +47,86 @@ export default class Game{
         this.player = ship;
         this.objects.push(ship);
 
-        //Debug---------------------------------------
-        // const debug1 = new Enemy({
-        //     ctx: this.ctx, 
-        //     game: this, 
-        //     pos: [this.DIM_X/2, this.DIM_Y/2]
-        // })
-        // const debug2 = new Enemy({
-        //     ctx: this.ctx, 
-        //     game: this, 
-        //     pos: [this.DIM_X/2, this.DIM_Y/3]
-        // })
-        // this.debug1 = debug1;
-        // this.debug2 = debug2;
-        // this.objects.push(debug1);
-        // this.objects.push(debug2);
-        //--------------------------------------------
-
         //Level 
-        const level = new Level({
+        this.level = new Level({
             ctx: this.ctx,
             game: this 
         });
-        this.level = level;
+
         //Game loop start
         this.secondsPassed = 0;
         this.oldTimeStamp= 0;
-        window.requestAnimationFrame(this.gameStart.bind(this))
-        //this.gameStart(this.TICK, this);
+        this.GameStartButton = {
+            x:0,
+            y:0,
+            width:this.DIM_Y,
+            height:this.DIM_X
+        }
+        this.gameMenu();
+        //window.requestAnimationFrame(this.gameStart.bind(this))
+    }
+
+    //Lord forgive me
+    gameMenu(){
+        if (this.player.health > 0){
+            let moon_elem = document.getElementById('moon_game');
+            moon_elem.style.cursor = 'auto'
+            var f = new FontFace('pressStart', 'url(src/styles/pressStart.ttf)');
+            f.load().then((font) => {
+                document.fonts.add(font);
+                this.ctx.fillStyle = "white";  
+                this.ctx.font = '40px pressStart';
+                this.ctx.fillText("Click to Start", this.DIM_X/2-275, this.DIM_Y/2); 
+            });
+        }else {
+            this.GameStartButton = {
+                x:0,
+                y:0,
+                width:this.DIM_Y,
+                height:this.DIM_X
+            }
+            let moon_elem = document.getElementById('moon_game');
+            moon_elem.style.cursor = 'auto'
+
+            this.ctx.fillStyle = "black";  
+            this.ctx.font = '40px pressStart';
+            this.ctx.fillText(`FINAL SCORE: ${this.player.score}` , this.DIM_X/2-300, this.DIM_Y/4 ); 
+            this.ctx.font = '30px pressStart';
+            this.ctx.fillText("GRADE: C-", this.DIM_X/2-120, this.DIM_Y/2); 
+            this.ctx.fillText("Click to Restart?", this.DIM_X/2-240, this.DIM_Y/1.5); 
+        }
+        
+    }
+
+    loadGame(){
+        if (this.player.health > 0){
+            let moon_elem = document.getElementById('moon_game');
+            moon_elem.style.cursor = 'none'
+            this.GameStartButton = {}
+            window.requestAnimationFrame(this.gameStart.bind(this))
+        }else {
+            let moon_elem = document.getElementById('moon_game');
+            moon_elem.style.cursor = 'none'
+            this.GameStartButton = {};
+            this.activeHitbox = [];
+            this.objects = [];
+            this.sprites = [];
+            this.level = new Level({
+                ctx: this.ctx,
+                game: this 
+            });
+            this.secondsPassed = 0;
+            this.oldTimeStamp= 0;
+            this.player = new PlayerShip({
+                ctx: this.ctx, 
+                game: this,
+                pos: [this.DIM_X/2, this.DIM_Y*.8]
+            })
+            this.sprites.push(this.cursor)
+            this.objects.push(this.player);
+            
+        }
+        
     }
 
     setupListeners(){
@@ -82,7 +134,18 @@ export default class Game{
         document.addEventListener("keyup", e => this.key[e.code] = false, false);
         document.getElementById("moon_game").addEventListener("mousedown", e => this.key[e.button] = true, false)
         document.getElementById("moon_game").addEventListener("mouseup", e => this.key[e.button] = false, false)
+        document.addEventListener("click", e =>{ 
+            if (this.isInside(this.mousePos, this.GameStartButton)){
+               console.log("Starting")
+               this.loadGame();
+            } 
+        })
         this.ctx.canvas.addEventListener('mousemove', event => this.getMousePos(event))
+    }
+
+    isInside(pos, rect){
+        
+        return pos[0] > rect.x && pos[0] < rect.x+rect.width && pos[1] < rect.y+rect.height && pos[1] > rect.y
     }
 
     drawBackground(){
@@ -94,12 +157,19 @@ export default class Game{
     
     // Game, 60 ticks per second (roughly, not timing accurate). Put all necessary functions/logic per tick in here.
     gameStart(timeStamp){
-        this.secondsPassed = (timeStamp - this.oldTimeStamp) / 1000;
-        this.oldTimeStamp = timeStamp;
-        this.update(this.secondsPassed, this.delta);
-        this.draw();
+        if (this.player.health > 0){
+            this.secondsPassed = (timeStamp - this.oldTimeStamp) / 1000;
+            this.oldTimeStamp = timeStamp;
+            this.update(this.secondsPassed, this.delta);
+            this.draw();
+        } else {
+            this.gameMenu();
+        }
+        
         window.requestAnimationFrame(this.gameStart.bind(this))
     }
+
+
 
     update(secondsPassed, delta){
         this.checkKeys();
@@ -121,6 +191,7 @@ export default class Game{
 
     draw(){
         this.ctx.clearRect(0, 0, this.DIM_X, this.DIM_Y);
+
         this.drawBackground();
         this.level.draw();
 

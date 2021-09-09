@@ -14,11 +14,16 @@ export default class Enemy extends Ship{
         this.weight = 2;
         //Max fire rate.
         this.fire = Util.throttle(this.fire, (50 / this.game.delta), this);
-        //this.pathTowards(this.pos, this.dir)
-        this.origPath = [0,0];
-        this.destPos = [10000,10000];
-        this.origSpeed = 0;
-        this.pathing = false;
+        this.firing = false;
+        this.targetDir = 0;
+        this.targetFirePos = this.game.player.pos;
+        //Max lifetime of an enemy ship is 25 secs. Used for easy cleanup.
+        setTimeout(() => {
+            this.removeSelf();
+        }, 50000)
+
+        //bad hack
+        this.homing = false;
     }
 
     fire(pos){
@@ -44,39 +49,30 @@ export default class Enemy extends Ship{
         //If pathing and not knocked back, stop moving at roughly destination position
         let arriveX = (this.pos[0] <= this.destPos[0]+20 && this.pos[0] >= this.destPos[0]-20)
         let arriveY = (this.pos[1] <= this.destPos[1]+20 && this.pos[1] >= this.destPos[1]-20)
-        if (!this.knockback && arriveX && arriveY && this.pathing){
+        if (!this.knockback && arriveX && arriveY && this.pathing && !this.homing){
             this.vel[0] = 0;
             this.vel[1] = 0;
         }
+        
+        if (this.firing){
+            if (this.targetDir === 1) this.targetFirePos = [this.pos[0], 2000]
+            if (this.targetDir === 2) this.targetFirePos = [1000, this.pos[1]]
+            if (this.targetDir === 3) this.targetFirePos = [-1000, this.pos[1]]
+            this.fire(this.targetFirePos)
             
+        }
+
         this.checkCollisions();
         if (this.health <= 0 && !this.knockback){ 
             this.removeSelf();
             this.game.player.score += 100;
         }
     }
-
-    pathTowards(pos1, pos2, speed = this.speed){
-        this.pathing = true;
-        this.destPos = pos2;
-        this.speed = speed;
-        var dx = (pos2[0] - pos1[0]);
-        var dy = (pos2[1] - pos1[1]);
-        var mag = Math.sqrt(dx * dx + dy * dy);
-
-
-        this.vel[0] = (dx / mag) * speed;
-        this.vel[1] = (dy / mag) * speed;
-        if (!this.knockback) {
-            this.origPath = pos2;
-            this.origSpeed = speed;
-        }
-        
-    }
   
     repath(){
         this.knockback = false;
-        this.pathTowards(this.pos, this.origPath, this.origSpeed)
+        this.currSprite.rotate = true;
+        this.pathTowards(this.pos, this.destPos, this.origSpeed)
     }
     
     recoverKnockback(damage){
@@ -88,6 +84,7 @@ export default class Enemy extends Ship{
             
         }, 1000*this.game.delta)
     }
+
     draw(){
         //Sprite drawing
         //console.log(this.currSprite.image)
@@ -98,6 +95,71 @@ export default class Enemy extends Ship{
         }
 
         this.currSprite.update();
-        this.currSprite.draw(this.pos, this.game.player.pos);
+        //Awful hack to make sure ship is facing where it's firing or going.
+        if (this.firing){
+            this.currSprite.rotate = true;
+            this.homing = false;
+            this.currSprite.draw(this.pos, this.targetFirePos);
+        }else if (this.homing) {
+            this.currSprite.draw(this.pos, this.destPos, false);
+        }else{
+            this.currSprite.rotate = true;
+            this.currSprite.draw(this.pos, this.destPos);
+        }        
+    }
+
+    //Event controllers
+
+    //Go Straight up/down
+    setEventPathVert(endY, speed, time){
+        setTimeout( () => {
+            this.homing = false;
+            this.pathTowards(this.pos, [this.pos[0], endY], speed)
+        }, time)
+    }
+
+    //Go Horizontal
+    setEventPathHor(endX, speed, time){
+        setTimeout( () => {
+            this.homing = false;
+            this.pathTowards(this.pos, [endX, this.pos[1]], speed)
+        }, time)
+        
+    }
+
+    //Go Somewhere
+    setEventPath(endPos, speed, time, homing){
+        setTimeout( ()=> {
+            this.homing = false;
+            if (homing) this.homing = true;
+            this.pathTowards(this.pos, endPos, speed)
+        }, time)
+    }
+
+    //Fire at pos for X duration at X time
+    setEventFire(pos, time, duration, direction){
+        let targetPos = pos;
+        
+        
+        setTimeout( ()=> {
+            this.firing = true;
+            this.targetDir = 0;
+            if (direction === 0) targetPos = this.game.player.pos
+            else if (direction === 1) this.targetDir = 1; 
+            else if (direction === 2) this.targetDir = 2; 
+            else if (direction === 3) this.targetDir = 3; 
+            this.targetFirePos = targetPos;
+        }, time)
+
+        setTimeout( ()=> {
+            this.firing = false;
+        }, time + duration)
+    }
+
+    setEventFireRate(rate, time){
+        setTimeout( ()=> {
+            this.throttleFireRate(rate)
+        }, time)
+        
     }
 }

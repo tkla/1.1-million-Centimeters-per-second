@@ -17,6 +17,7 @@ footer{
     width: fit-content;
 }
 
+
 body {
     display: block;
     background-color: black;
@@ -40,8 +41,8 @@ body {
 
 #moon_game{
     border-color: grey;
-    cursor: none;
-    cursor: hidden;
+    /* cursor: none;
+    cursor: hidden; */
 }
 
 .main-stats{
@@ -67,11 +68,13 @@ body {
     align-items: flex-start;
     margin-top: 5px;
     font-size:x-large;
-    visibility: hidden;
+    /* visibility: hidden; */
 }
 
 .hidden-stats > li{
-    background-color:rgb(204, 185, 201);
+    /* background-color:rgb(204, 185, 201); */
+    font-size: 15px;
+    color: white;
     padding: 10px;
     margin: 5px;
 }

@@ -4,14 +4,20 @@ export default class Ship{
 
     constructor(options){
         this.ctx = options.ctx;
+        //Health and Hitbox/Hurtbox. Typically hurtbox is inside of hitbox.
         this.health = 40;
         this.hitboxRadius = options.hitboxRadius || 25;
         this.hurtboxRadius = options.hurtboxRadius || 25;
+        this.hit = false; 
+
         this.color = options.color || "red";
         this.game = options.game;
         this.pos = [options.pos[0], options.pos[1]];
         this.focus = false;
-        this.player = false;
+        
+        //Mark if this ship is the player.
+        this.player = false; 
+
         //Movement
         this.vel = [0, 0];
         this.speed = 1;
@@ -40,8 +46,12 @@ export default class Ship{
         })
 
         this.currSprite = this.sprite;
-        this.hit = false; 
         
+
+        //Remembers where to path to.
+        this.origSpeed = this.speed;
+        this.pathing = false;
+        this.destPos = [5000,5000]
     }
 
     draw(){
@@ -136,20 +146,35 @@ export default class Ship{
             this.hit = true;
             this.game.player.getHit();
             result = true;
+            this.removeSelf();
         } 
         return result;
     }
 
     //Go towards pos2. Updates this.speed to new speed arg if given.
     pathTowards(pos1, pos2, speed = this.speed){
+        this.pathing = true;
+        this.destPos = pos2;
+        this.origSpeed = speed;
+        this.speed = speed;
+
+        var dx = (pos2[0] - pos1[0]);
+        var dy = (pos2[1] - pos1[1]);
+        var mag = Math.sqrt(dx * dx + dy * dy);
+
+        this.vel[0] = (dx / mag) * speed;
+        this.vel[1] = (dy / mag) * speed;        
+    }
+
+    
+    pushTowards(pos1, pos2, speed = this.speed){
         this.speed = speed;
         var dx = (pos2[0] - pos1[0]);
         var dy = (pos2[1] - pos1[1]);
         var mag = Math.sqrt(dx * dx + dy * dy);
 
-
         this.vel[0] = (dx / mag) * speed;
-        this.vel[1] = (dy / mag) * speed;
+        this.vel[1] = (dy / mag) * speed;  
     }
 
     isCollideWith = function(other) {
