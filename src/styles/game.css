@@ -10,12 +10,20 @@ h1 {
    width: fit-content;
 }
 
-footer{
-   margin: auto;
+footer {
+   margin: auto; 
    color: white;
    width: fit-content;
 }
 
+footer ul{
+   display: flex;
+}
+
+footer ul > li {
+   margin-left: 10px;
+   margin-right: 10px;
+}
 
 body {
    display: block;
