@@ -12,6 +12,7 @@ export default class Level {
       this.DIM_X = this.ctx.canvas.width;
       this.DIM_Y = this.ctx.canvas.height;
 
+      this.levelComplete = false;
       //Current enemy set to give instructions to
       this.currEnemy = [];
       //this.game.objects.push( this.debug)
@@ -197,11 +198,12 @@ export default class Level {
       }, 53337)
 
       setTimeout(() => {
-         this.player.health = 0; 
-      }, 70000)
+         this.endLevel();
+      }, 75000)
    }
 
    endLevel() {
+      this.levelComplete = true;
    }
 
    /*  

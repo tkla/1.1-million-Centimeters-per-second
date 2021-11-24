@@ -52,10 +52,11 @@ export default class Game {
       });
 
       //Game loop start
-      this.frameRate = (1000/60) - .001;
-      this.secondsPassed = 0; // Time since last windows frame request
-      this.oldTimeStamp = 0; 
-      this.updateInterval = 0; // Time since last game update
+      this.frameRate = (1000 / 60) - .001;   // Frames per ms
+      this.secondsPassed = 0;                // Time since last windows frame request
+      this.timeStartOffset = 0;              // timeStart in gameStart will begin ticking immediately on browser load. Add offset to timer to compensate.      
+      this.oldTimeStamp = 0;
+      this.updateInterval = 0;               // Time since last game update
       this.background = Images.background;
       this.imgHeight = 0;
       this.scrollSpeed = 1;
@@ -68,14 +69,81 @@ export default class Game {
          height: this.DIM_X
       }
 
-      
+      this.masterVolume = 1;      
       this.gameMenu();
       //window.requestAnimationFrame(this.gameStart.bind(this))
    }
 
+   gameStart(timeStamp) {
+      if (this.player.health > 0 && !this.level.levelComplete) {
+         this.secondsPassed = (timeStamp - this.oldTimeStamp);
+         let deltaRatio = this.secondsPassed / this.frameRate;
+         this.oldTimeStamp = timeStamp;
+         this.update(deltaRatio, this.delta);
+         this.draw();
+      } else {
+         this.gameMenu();
+      }
+
+      window.requestAnimationFrame(this.gameStart.bind(this))
+   }
+
+   
+   loadGame() {
+      if (this.player.health > 0 && !this.level.levelComplete) {
+         let moon_elem = document.getElementById('moon_game');
+         moon_elem.style.cursor = 'none'
+         this.GameStartButton = {}
+         window.requestAnimationFrame(this.gameStart.bind(this))
+         this.level.loadLevel();
+         Images.doctor.play();
+         // Images.bgm.play();
+      } else {
+         window.location.reload();
+         // let moon_elem = document.getElementById('moon_game');
+         // moon_elem.style.cursor = 'none'
+
+         // this.GameStartButton = {};
+         // this.activeHitbox = [];
+         // this.objects = [];
+         // this.sprites = [];
+         // this.level.time = 0;
+         // this.level.currEnemy = [];
+
+         // this.secondsPassed = 0;
+         // this.oldTimeStamp= 0;
+         // this.player = new PlayerShip({
+         //     ctx: this.ctx, 
+         //     game: this,
+         //     pos: [this.DIM_X/2, this.DIM_Y*.8]
+         // })
+         // this.sprites.push(this.cursor)
+         // this.objects.push(this.player);
+         // window.cancelAnimationFrame()
+      }
+   }
+
+   update(deltaRatio, delta) {
+      this.checkKeys();
+      //Calls each objects update function.
+      this.level.update(this.deltaRatio);
+      //console.log(this.objects);
+      this.objects.forEach(obj => {
+         obj.update(deltaRatio, delta);
+      })
+
+      this.activeHitbox.forEach(obj => {
+         obj.update(deltaRatio, delta);
+      })
+
+      this.sprites.forEach(obj => {
+         obj.update(deltaRatio, delta);
+      })
+   }
+   
    // Need heavy refactor
    gameMenu() {
-      if (this.player.health > 0) {
+      if (this.player.health > 0 && !this.level.levelComplete) {
          let moon_elem = document.getElementById('moon_game');
          moon_elem.style.cursor = 'auto'
          var f = new FontFace('pressStart', 'url(src/styles/pressStart.ttf)');
@@ -106,40 +174,40 @@ export default class Game {
          this.ctx.fillText("Click to Restart?", this.DIM_X / 2 - 240, this.DIM_Y / 1.5);
       }
    }
+   
+   draw() {
+      this.ctx.clearRect(0, 0, this.DIM_X, this.DIM_Y);
 
-   loadGame() {
-      if (this.player.health > 0) {
-         let moon_elem = document.getElementById('moon_game');
-         moon_elem.style.cursor = 'none'
-         this.GameStartButton = {}
-         window.requestAnimationFrame(this.gameStart.bind(this))
-         this.level.loadLevel();
-         // Images.doctor.play();
-         //Images.bgm.play();
-      } else {
-         window.location.reload()
-         // let moon_elem = document.getElementById('moon_game');
-         // moon_elem.style.cursor = 'none'
+      this.drawBackground();
+      this.level.draw();
 
-         // this.GameStartButton = {};
-         // this.activeHitbox = [];
-         // this.objects = [];
-         // this.sprites = [];
-         // this.level.time = 0;
-         // this.level.currEnemy = [];
+      this.objects.forEach(obj => {
+         obj.draw();
+      })
 
-         // this.secondsPassed = 0;
-         // this.oldTimeStamp= 0;
-         // this.player = new PlayerShip({
-         //     ctx: this.ctx, 
-         //     game: this,
-         //     pos: [this.DIM_X/2, this.DIM_Y*.8]
-         // })
-         // this.sprites.push(this.cursor)
-         // this.objects.push(this.player);
-         // window.cancelAnimationFrame()
-      }
+      this.activeHitbox.forEach(obj => {
+         obj.draw();
+      })
 
+      this.sprites.forEach(obj => {
+         obj.draw();
+      })
+   }
+
+   drawBackground() {
+      this.ctx.drawImage(this.background, 0, this.imgHeight, this.DIM_X, this.DIM_Y);
+      this.ctx.drawImage(this.background, 0, this.imgHeight - this.DIM_Y, this.DIM_X, this.DIM_Y)
+      this.imgHeight += this.scrollSpeed;
+      if (this.imgHeight === this.DIM_Y) this.imgHeight = 0;
+      this.ctx.fillStyle = "white";
+      this.ctx.font = '20px pressStart';
+
+      // Draw ingame timer
+      this.timeStartOffset ||= this.oldTimeStamp; 
+      var time = (75 - (this.oldTimeStamp - this.timeStartOffset) / 1000);
+      if (time < 1) time = 0;
+      let timer = time.toString().substring(0, 5);
+      this.ctx.fillText(`${timer}`, this.DIM_X / 2 - 70, this.DIM_Y / 10);
    }
 
    setupListeners() {
@@ -158,68 +226,6 @@ export default class Game {
 
    isInside(pos, rect) {
       return pos[0] > rect.x && pos[0] < rect.x + rect.width && pos[1] < rect.y + rect.height && pos[1] > rect.y
-   }
-
-   drawBackground(timeStamp) {
-      this.ctx.drawImage(this.background, 0, this.imgHeight, this.DIM_X, this.DIM_Y);
-      this.ctx.drawImage(this.background, 0, this.imgHeight - this.DIM_Y, this.DIM_X, this.DIM_Y)
-      this.imgHeight += this.scrollSpeed;
-      if (this.imgHeight === this.DIM_Y) this.imgHeight = 0;
-      this.ctx.fillStyle = "white";
-      this.ctx.font = '20px pressStart';
-      let timer = (70 - this.oldTimeStamp/1000).toString().substring(0, 5)
-      this.ctx.fillText(`${timer}`, this.DIM_X / 2 - 70, this.DIM_Y / 10);
-   }
-
-   gameStart(timeStamp) {
-      if (this.player.health > 0){
-         this.secondsPassed = (timeStamp - this.oldTimeStamp);
-         let deltaRatio = this.secondsPassed / this.frameRate;
-         this.oldTimeStamp = timeStamp;
-         this.update(deltaRatio, this.delta);
-         this.draw();
-     } else {
-         this.gameMenu();
-     }
-     
-     window.requestAnimationFrame(this.gameStart.bind(this))
-   }
-
-   update(deltaRatio, delta) {
-      this.checkKeys();
-      //Calls each objects update function.
-      this.level.update(this.deltaRatio);
-      //console.log(this.objects);
-      this.objects.forEach(obj => {
-         obj.update(deltaRatio, delta);
-      })
-
-      this.activeHitbox.forEach(obj => {
-         obj.update(deltaRatio, delta);
-      })
-
-      this.sprites.forEach(obj => {
-         obj.update(deltaRatio, delta);
-      })
-   }
-
-   draw() {
-      this.ctx.clearRect(0, 0, this.DIM_X, this.DIM_Y);
-
-      this.drawBackground();
-      this.level.draw();
-
-      this.objects.forEach(obj => {
-         obj.draw();
-      })
-
-      this.activeHitbox.forEach(obj => {
-         obj.draw();
-      })
-
-      this.sprites.forEach(obj => {
-         obj.draw();
-      })
    }
 
    checkKeys() {
@@ -280,8 +286,7 @@ export default class Game {
 
    getMousePos(e) {
       var rect = this.ctx.canvas.getBoundingClientRect();
-
-      this.mousePos[0] = e.clientX - rect.left,
-         this.mousePos[1] = e.clientY - rect.top
+      this.mousePos[0] = e.clientX - rect.left;
+      this.mousePos[1] = e.clientY - rect.top;
    }
 }
