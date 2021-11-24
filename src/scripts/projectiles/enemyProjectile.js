@@ -10,11 +10,14 @@ export default class EnemyProjectile extends Projectile{
         super(options)
         // this.sprite = new Sprite({
         //     ctx: this.ctx,
-        //     swidth: 100,
-        //     sheight: 100,
-        //     dy: this.pos[1],
-        //     dx: this.pos[0],
-        //     image: Images.bulletImage
+        //     swidth: 901,
+        //     sheight: 96,
+        //     rotate: false,
+        //     pos: [this.pos[0], this.pos[1]+100], 
+        //     game: this.game,
+        //     image: Images.enemyProj,
+        //     frameMax: 9,
+        //     ticksPerFrame: 3
         // });
 
         

@@ -1,5 +1,6 @@
-//Image loading
+//I've repurposed this last minute to be a jank generic file manager. 
 
+//Image loading
 const bulletImage = new Image();
 bulletImage.src = 'src/images/projectiles/player_bullet.png';
 
@@ -27,9 +28,13 @@ explosion.src = 'src/images/explosion.png'
 const hit = new Image(); 
 hit.src = 'src/images/hit.png'
 
+const enemyProj = new Image();
+enemyProj.src = 'src/images/projectiles/enemyProj.png'
+
 const projHit = new Image(); 
 projHit.src = 'src/images/projectiles/projectileHit.png'
 
+//Audio Loading
 const doctor = new Audio("src/images/doctor.mp3"); 
 const explode = new Audio("src/images/Audio/explode.mp3")
 const bgm = new Audio("src/images/Audio/bgm.mp3")
@@ -50,5 +55,6 @@ export const Images = {
     doctor: doctor,
     projHit: projHit,
     explode: explode,
-    bgm: bgm
+    bgm: bgm,
+    enemyProj: enemyProj
 }

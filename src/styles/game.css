@@ -1,80 +1,81 @@
-
 header{
-    background-color: red;
+   background-color: red;
 }
 
 h1 {
-    margin: auto;
-    margin-top: 10px;
-    color: white;
-    font-size: larger;
-    width: fit-content;
+   margin: auto;
+   margin-top: 10px;
+   color: white;
+   font-size: larger;
+   width: fit-content;
 }
 
 footer{
-    margin: auto;
-    color: white;
-    width: fit-content;
+   margin: auto;
+   color: white;
+   width: fit-content;
 }
 
 
 body {
-    display: block;
-    background-color: black;
+   display: block;
+   background-color: black;
 }
 
 .main-outline {
-    display: flex;
-    margin: auto;
-    flex-direction: row;
-    justify-content: flex-start;
-    align-items: flex-start;
-    width: 1600px;
-    height: 900px;
+   display: flex;
+   margin: auto;
+   flex-direction: row;
+   justify-content: flex-start;
+   align-items: flex-start;
+   /* width: 1600px;
+   height: 900px; */
 }
 
 .main-game {
-    padding: 15px;
-    border-color: black;
-    margin-right: auto;
+   padding: 15px;
+   border-color: black;
 }
 
 #moon_game{
-    border-color: grey;
-    /* cursor: none;
-    cursor: hidden; */
+   border-color: grey;
+   height: 85vh;
+   width: 45vw;
+   /* cursor: none;
+   cursor: hidden; */
 }
 
 .main-stats{
-    display: flex;
-    flex-direction: column;
-    align-items: flex-end;
-    margin-top: 5px;
-    margin-left: auto;
-    font-size: x-large;
+   display: flex;
+   flex-direction: column;
+   align-items: flex-end;
+   margin-top: 5px;
+   margin-left: auto;
+   font-size: x-large;
 }
 
 .main-stats > li{
-    /* background-color:rgb(204, 185, 201); */
-    border-style: solid; 
-    padding: 10px;
-    margin: 5px;
-    color: white;
+   /* background-color:rgb(204, 185, 201); */
+   border-style: solid; 
+   padding: 10px;
+   margin: 5px;
+   color: white;
 }
 
 .hidden-stats{
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    margin-top: 5px;
-    font-size:x-large;
-    /* visibility: hidden; */
+   display: flex;
+   flex-direction: column;
+   align-items: flex-start;
+   margin-top: 5px;
+   margin-right: auto;
+   font-size:x-large;
+   /* visibility: hidden; */
 }
 
 .hidden-stats > li{
-    /* background-color:rgb(204, 185, 201); */
-    font-size: 15px;
-    color: white;
-    padding: 10px;
-    margin: 5px;
+   /* background-color:rgb(204, 185, 201); */
+   font-size: 15px;
+   color: white;
+   padding: 10px;
+   margin: 5px;
 }
