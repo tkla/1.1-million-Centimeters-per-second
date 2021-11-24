@@ -235,6 +235,10 @@ export default class Game {
             this.loadGame();
          }
       })
+
+      // Prevent clicking on Url triggering game start
+      document.getElementById('github').addEventListener('click', e => e.stopPropagation());
+      document.getElementById('linkedIn').addEventListener('click', e => e.stopPropagation());
       document.getElementById('volume').addEventListener('input', e => this.setVolume(e));
       this.ctx.canvas.addEventListener('mousemove', event => this.getMousePos(event))
    }
