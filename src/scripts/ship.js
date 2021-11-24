@@ -190,14 +190,14 @@ export default class Ship {
       return (dist < ((this.hitboxRadius + other.hurtboxRadius)));
    }
 
-   removeSelf() {
+   removeSelf(timedOut) {
       //Cursor 
       const death = new Sprite({
          ctx: this.ctx,
          swidth: 1792,
          sheight: 256,
          rotate: true,
-         pos: [this.pos[0], this.pos[1] + 100], //Shitty workaround cause I don't know how to pos sprites properlu
+         pos: [this.pos[0], this.pos[1] + 100], // Bad workaround until I figure out better way to pos sprites properly
          game: this.game,
          image: Images.explosion,
          frameMax: 7,
@@ -206,7 +206,7 @@ export default class Ship {
          lifeTime: 300
       });
       this.game.sprites.push(death)
-      Images.explode.play();
+      if (!timedOut) Images.explode.play();
       let idx = this.game.objects.indexOf(this);
       this.game.objects.splice(idx, 1);
    }

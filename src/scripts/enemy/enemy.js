@@ -19,7 +19,7 @@ export default class Enemy extends Ship {
       this.targetFirePos = this.game.player.pos;
       //Max lifetime of an enemy ship is 25 secs. Used for easy cleanup.
       setTimeout(() => {
-         this.removeSelf();
+         this.removeSelf(true);
       }, 50000)
 
       //bad hack

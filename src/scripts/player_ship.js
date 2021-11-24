@@ -42,8 +42,6 @@ export default class PlayerShip extends Ship {
    }
 
    checkCollisions() {
-      let objects = this.game.objects;
-
       let life = document.getElementById('main-stats-life');
       let score = document.getElementById('main-stats-score');
       life.innerHTML = `Life: ` + `${this.health}`.padStart(5, '0');

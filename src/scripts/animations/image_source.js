@@ -1,6 +1,5 @@
 // This has been repurposed to be generic file loader. Suggest rewrite later on.
 
-export const masterVolume = 1;
 //Image loading
 const bulletImage = new Image();
 bulletImage.src = 'src/images/projectiles/player_bullet.png';
@@ -39,9 +38,9 @@ projHit.src = 'src/images/projectiles/projectileHit.png'
 const doctor = new Audio("src/images/doctor.mp3"); 
 const explode = new Audio("src/images/Audio/explode.mp3")
 const bgm = new Audio("src/images/Audio/bgm.mp3")
-doctor.volume = 0.05 * masterVolume;
-explode.volume = 0.05 * masterVolume;
-bgm.volume = 0.05 * masterVolume;
+doctor.volume = 0.05;
+explode.volume = 0.05;
+bgm.volume = 0.05;
 
 export const Images = {
     bulletImage: bulletImage,

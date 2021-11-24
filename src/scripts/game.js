@@ -1,6 +1,6 @@
 import Level from "./level"
 import PlayerShip from "./player_ship";
-import { Images } from './animations/image_source'
+import { Images, MasterVolume } from './animations/image_source'
 import Sprite from './animations/sprite'
 import { Util } from './util'
 
@@ -8,6 +8,8 @@ export default class Game {
    constructor(ctx) {
       this.ctx = ctx;
       this.canvas = this.ctx.canvas;
+      this.ctx.canvas.width  = window.innerHeight * .9;
+      this.ctx.canvas.height = window.innerHeight * .9;
       this.DIM_X = ctx.canvas.width;
       this.DIM_Y = ctx.canvas.height;
 
@@ -61,7 +63,7 @@ export default class Game {
       this.imgHeight = 0;
       this.scrollSpeed = 1;
 
-      //PLEASE REFACTOR
+      // In need of heavy refactoring.
       this.GameStartButton = {
          x: 0,
          y: 0,
@@ -69,7 +71,12 @@ export default class Game {
          height: this.DIM_X
       }
 
-      this.masterVolume = 1;      
+      // Audio handling
+      // Base starting volume. Use as a baseline for multiplying with the val from volume slider.                     
+      this.baseVolume = .05;                   
+      // Master volume controls all sound
+      this.masterVolume = (window.localStorage.volume ? window.localStorage.volume / 100 * this.baseVolume : .05);
+      document.getElementById('volume').value = window.localStorage.volume;
       this.gameMenu();
       //window.requestAnimationFrame(this.gameStart.bind(this))
    }
@@ -96,8 +103,12 @@ export default class Game {
          this.GameStartButton = {}
          window.requestAnimationFrame(this.gameStart.bind(this))
          this.level.loadLevel();
+
+         Images.doctor.volume = this.baseVolume;
+         Images.bgm.volume = this.baseVolume;
+         Images.explode.volume = this.baseVolume;
          Images.doctor.play();
-         // Images.bgm.play();
+         Images.bgm.play();
       } else {
          window.location.reload();
          // let moon_elem = document.getElementById('moon_game');
@@ -124,18 +135,21 @@ export default class Game {
    }
 
    update(deltaRatio, delta) {
+      // Update audio vol
+      Images.doctor.volume = this.masterVolume;
+      Images.bgm.volume = this.masterVolume;
+      Images.explode.volume = this.masterVolume;
       this.checkKeys();
+
       //Calls each objects update function.
       this.level.update(this.deltaRatio);
-      //console.log(this.objects);
+
       this.objects.forEach(obj => {
          obj.update(deltaRatio, delta);
       })
-
       this.activeHitbox.forEach(obj => {
          obj.update(deltaRatio, delta);
       })
-
       this.sprites.forEach(obj => {
          obj.update(deltaRatio, delta);
       })
@@ -221,6 +235,7 @@ export default class Game {
             this.loadGame();
          }
       })
+      document.getElementById('volume').addEventListener('input', e => this.setVolume(e));
       this.ctx.canvas.addEventListener('mousemove', event => this.getMousePos(event))
    }
 
@@ -288,5 +303,12 @@ export default class Game {
       var rect = this.ctx.canvas.getBoundingClientRect();
       this.mousePos[0] = e.clientX - rect.left;
       this.mousePos[1] = e.clientY - rect.top;
+   }
+
+   setVolume(e) {
+      window.localStorage.setItem('volume', e.currentTarget.value);
+      var sliderVal = e.currentTarget.value / 100;
+      this.masterVolume = sliderVal * this.baseVolume;
+      if (this.masterVolume <= .01) this.masterVolume = 0;
    }
 }
