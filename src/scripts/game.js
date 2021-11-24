@@ -219,7 +219,7 @@ export default class Game {
       // Draw ingame timer
       this.timeStartOffset ||= this.oldTimeStamp; 
       var time = (75 - (this.oldTimeStamp - this.timeStartOffset) / 1000);
-      if (time < 1) time = 0;
+      if (time <= .5) time = 0;
       let timer = time.toString().substring(0, 5);
       this.ctx.fillText(`${timer}`, this.DIM_X / 2 - 70, this.DIM_Y / 10);
    }

@@ -82,7 +82,7 @@ export default class Enemy extends Ship {
             this.health -= damage;
          }
 
-      }, 1000 * this.game.delta)
+      }, 500 * this.game.delta)
    }
 
    draw() {
