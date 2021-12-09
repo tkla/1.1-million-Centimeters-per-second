@@ -1,3 +1,5 @@
+Check it out at https://tkla.github.io/1.1-million-Centimeters-per-second/
+
 -Background-
 
 A scrolling shooter game with a top down perspective and a screen constantly moving forwards. You control a ship/character which can fire projectiles at your mouse location. 
